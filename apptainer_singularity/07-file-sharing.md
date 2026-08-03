@@ -1,18 +1,17 @@
----
-title: "Sharing files between host and container"
-teaching: 30
-exercises: 0
-questions:
-- "How to read and write files on the host system from within the container?"
-objectives:
-- "Map directories on your host system to directories within your container."
-- "Learn about the bind paths included automatically in all containers."
-keypoints:
-- "Bind mounts allow reading and writing files within the container."
-- "In Apptainer, you have same owner and permissions for files inside and outside the container."
-- "Some paths are mounted by default by Apptainer."
-- "Additional directories to bind can be defined using the `--bind` option or the environment variable `$SINGULARITY_BIND`."
----
+# Sharing files between host and container
+
+:::{admonition} Overview
+:class: note
+**Teaching:** 30 min
+
+**Questions**
+- How to read and write files on the host system from within the container?
+
+**Objectives**
+- Map directories on your host system to directories within your container.
+- Learn about the bind paths included automatically in all containers.
+:::
+
 <iframe width="427" height="251" src="https://www.youtube.com/embed/E-vlXHEsacE?list=PLKZ9c4ONm-VkxWW98Gcn9H6WwykMiqtnF" title="Intro to Apptainer/Singularity #5 - Sharing files between host and container"  frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
 
 One of the key features about containers is the isolation of the processes running inside them. It means,
@@ -57,14 +56,14 @@ Apptainer> pwd
 you will notice that the files stored on the host are located inside the container! As we explained above, Apptainer
 mounts automatically your `$HOME` inside the container.
 
-> ## Disabling system binds
->
-> If for any reason you want to execute a container removing the default binds, the command-line option `--no-mount`
-> is available. For example, to disable the bind of `/tmp`
-> ```bash
-> run --no-mount tmp my_container.sif
-> ```
-{: .callout}
+:::{admonition} Disabling system binds
+:class: tip
+If for any reason you want to execute a container removing the default binds, the command-line option `--no-mount`
+is available. For example, to disable the bind of `/tmp`
+```bash
+run --no-mount tmp my_container.sif
+```
+:::
 
 Try this time with
 ```bash
@@ -126,14 +125,14 @@ apptainer shell --bind /cvmfs rootInUbuntu.sif
 ```
 Will mount `/cvmfs` inside the container. Try it!
 
-> ## Binding directories with Docker-like syntax using `--mount`
->
-> The flag `--mount` provides a method to bind directories using the syntax of Docker.
-> The bind is specified with the format `type=bind,src=<source>,dst=<dest>`.
-> Currently, only `type=bind` is supported. Check the
-> [documentation](https://apptainer.org/docs/user/main/bind_paths_and_mounts.html#mount-examples) for
-> additional options available.
-{: .callout}
+:::{admonition} Binding directories with Docker-like syntax using `--mount`
+:class: tip
+The flag `--mount` provides a method to bind directories using the syntax of Docker.
+The bind is specified with the format `type=bind,src=<source>,dst=<dest>`.
+Currently, only `type=bind` is supported. Check the
+[documentation](https://apptainer.org/docs/user/main/bind_paths_and_mounts.html#mount-examples) for
+additional options available.
+:::
 
 ### Bind with environment variables
 
@@ -147,4 +146,11 @@ will bind CVMFS to all your Apptainer containers (`/cvmfs` must be available in 
 
 You can also bind multiple directories using commas between each `source:destination`.
 
+:::{admonition} Key Points
+:class: note
+- Bind mounts allow reading and writing files within the container.
+- In Apptainer, you have same owner and permissions for files inside and outside the container.
+- Some paths are mounted by default by Apptainer.
+- Additional directories to bind can be defined using the `--bind` option or the environment variable `$SINGULARITY_BIND`.
+:::
 

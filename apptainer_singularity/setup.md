@@ -1,10 +1,8 @@
----
-title: Setup
----
+# Setup
 
 <iframe width="427" height="251" src="https://www.youtube.com/embed/g0cCErlveiI?list=PLKZ9c4ONm-VkxWW98Gcn9H6WwykMiqtnF" title="Intro to Apptainer/Singularity #0 - Setup" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
 
-In this document we use the names *Apptainer* and *Singularity* interchangeably. See the [Introduction]({{ page.root }}{% link _episodes/01-introduction.md %})
+In this document we use the names *Apptainer* and *Singularity* interchangeably. See the [Introduction](01-introduction.md)
 for more details about existing Apptainer and Singularity versions and the differences between them.
 
 ## Option 1: Use pre-installed apptainer on a cluster

@@ -1,17 +1,18 @@
----
-title: "Apptainer/Singularity instances"
-teaching: 40
-exercises: 10
-questions:
-- "How can I keep my container running in the background?"
-- "What are the use cases for instances?"
-objectives:
-- "Run containers in a detached mode to keep services up."
-- "Deploy instances via definition files."
-keypoints:
-- Instances allow to setup services via Apptainer images or definition files.
-- Code provided in Jupyter notebooks can be accompanied by a Apptainer/Singularity image with the environment needed for its execution, ensuring the reproducibility of the results.
----
+# Apptainer/Singularity instances
+
+:::{admonition} Overview
+:class: note
+**Teaching:** 40 min | **Exercises:** 10 min
+
+**Questions**
+- How can I keep my container running in the background?
+- What are the use cases for instances?
+
+**Objectives**
+- Run containers in a detached mode to keep services up.
+- Deploy instances via definition files.
+:::
+
 <iframe width="427" height="251" src="https://www.youtube.com/embed/i0sU6ijvUPk?list=PLwN-li4B10E3MtN4620yhGbctjTyQ9jna" title="Intro to Apptainer/Singularity #6 - Instances"  frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
 
 As we have studied in previous chapters, commands such as `run` and `shell` allocate Apptainer/Singularity
@@ -65,16 +66,16 @@ apptainer instance stop myalma9
 You can confirm the instance doesn't exist with `instance list`.
 
 
-> ## Instances with bind paths
->
-> When starting an instance, the same options for bind directories between the host and the container as running
-> an interactive session are available. For example, if you want a directory mounted inside the instance, use the
-> `--bind` option:
-> ```bash
-> apptainer instance start --bind $HOME/mydata:/data almalinux_9.sif myalma9
-> ```
-> binding the directory `mydata/` from the host as `/data` inside the instance.
-{: .callout}
+:::{admonition} Instances with bind paths
+:class: tip
+When starting an instance, the same options for bind directories between the host and the container as running
+an interactive session are available. For example, if you want a directory mounted inside the instance, use the
+`--bind` option:
+```bash
+apptainer instance start --bind $HOME/mydata:/data almalinux_9.sif myalma9
+```
+binding the directory `mydata/` from the host as `/data` inside the instance.
+:::
 
 
 ## A web server as an instance
@@ -115,7 +116,7 @@ From: ubuntu:20.04
    cd /tmp
    python3.9 -m http.server 8850
 ```
-If you recall the chapter about [definition files]({{ page.root }}{% link _episodes/05-definition-files.md %}),
+If you recall the chapter about [definition files](05-definition-files.md),
 this definition file will pull the official Ubuntu image from Dockerhub, and will install Python3.9.
 In addition, it copies `index.html` in `/tmp` **inside** the container. When the instance starts, commands specified on
 `%startscript` are executed. On this example, `http.server` will be executed, serving a page in the port 8850 (you can
@@ -157,25 +158,25 @@ curl http://localhost:8850
 
 If you are executing Apptainer locally, try to open http://localhost:8850.
 
-> ## SSH tunneling
->
-> If you are deploying a service in a cluster of your institution (as LXPLUS at CERN) it is likely that you need
-> SSH tunneling for opening pages served by your service with a web browser. A basic Local Port Forwarding can be configured as:
-> ```bash
-> ssh -L [local_hostname:]<local_port>:localhost:<dest_port> myuser@<server>
-> ```
-> where `<local_port>` is the one used by your service running on `<server>`, and `<server>` is the address of your institutional resources
-> (`echo "$(whoami)@$(hostname)"` will print your user and host).
-> Finally `localhost:<dest_port>` is how you will access the service locally, e.g. what you type in the laptop browser.
-> For example, for connecting to LXPLUS forwarding the port 8850:
-> ```bash
->  ssh -L 8850:localhost:8850 myuser@lxplus.cern.ch
-> ```
-> Then you can open http://localhost:8850 in your machine!
->
-> Port numbers less than 1024 are privileged ports and can be used only by root.
-> Please consult the allowed ports and rules with your institution.
-{: .callout}
+:::{admonition} SSH tunneling
+:class: tip
+If you are deploying a service in a cluster of your institution (as LXPLUS at CERN) it is likely that you need
+SSH tunneling for opening pages served by your service with a web browser. A basic Local Port Forwarding can be configured as:
+```bash
+ssh -L [local_hostname:]<local_port>:localhost:<dest_port> myuser@<server>
+```
+where `<local_port>` is the one used by your service running on `<server>`, and `<server>` is the address of your institutional resources
+(`echo "$(whoami)@$(hostname)"` will print your user and host).
+Finally `localhost:<dest_port>` is how you will access the service locally, e.g. what you type in the laptop browser.
+For example, for connecting to LXPLUS forwarding the port 8850:
+```bash
+ ssh -L 8850:localhost:8850 myuser@lxplus.cern.ch
+```
+Then you can open http://localhost:8850 in your machine!
+
+Port numbers less than 1024 are privileged ports and can be used only by root.
+Please consult the allowed ports and rules with your institution.
+:::
 
 Remember to stop the instance once you are done.
 
@@ -187,7 +188,7 @@ Jupyter notebook server with a customized environment.
 narrative text, and visualizations.
 
 What if we provide a Jupyter notebook ready to use ROOT? If you remember our example from the
-[definition files chapter]({{ page.root }}{% link _episodes/05-definition-files.md %}),
+[definition files chapter](05-definition-files.md),
 at this point it must be almost straightforward:
 ```
 Bootstrap: docker
@@ -245,12 +246,13 @@ Currently running servers:
 http://localhost:8850/?token=12asldc9b2084f9b664b39a6246022312bc9c605b :: /home/myHome
 ```
 
-> ## Notebook starting on a different port!
-> If the chosen port for the Notebook (8850 stated in the SIF file) is not available,
-> the notebook will not error out, but will start and use the first available port after that.
-> E.g. if you did not terminate the web server from the previous example,
-> The above command "jupyter notebook list" will show you the correct port.
-{: .callout}
+:::{admonition} Notebook starting on a different port!
+:class: tip
+If the chosen port for the Notebook (8850 stated in the SIF file) is not available,
+the notebook will not error out, but will start and use the first available port after that.
+E.g. if you did not terminate the web server from the previous example,
+The above command "jupyter notebook list" will show you the correct port.
+:::
 
 Open the URL with the token (from http to the first space), and you will be able to see the Jupyter interface. Try to open a new notebook and write in
 a cell to confirm that ROOT is available:
@@ -270,34 +272,40 @@ set the environment required to execute the cells. It doesn't matter if yourself
 ten years, your code will work independently of the software available in your computer as long as Apptainer/Singularity
 is available!
 
-> ## A Jupyter notebook with Uproot available
->
-> Can you setup a Jupyter notebook server with [Uproot](https://uproot.readthedocs.io/en/latest/index.html) available in Apptainer?
->
-> Hint: Uproot can be installed using `pip`. And use the option `--break-system-packages`.
-> New Python versions complain when installing packages without a virtual environment. You need that option to force the install.
->
-> > ## Solution
-> >
-> >```
-> >Bootstrap: docker
-> >From: ubuntu:24.04
-> >
-> >%post
-> >    apt-get update -y
-> >    apt-get install -y python3
-> >    apt-get install -y python3-pip
-> >    apt-get install -y python3-notebook
-> >    pip install --break-system-packages uproot
-> >
-> >%startscript
-> >   jupyter notebook --port 8850
-> >```
-> >Confirm that Uproot is available opening a notebook and executing in a cell
->> ```python
->> import uproot
->> print(uproot.__doc__)
->>```
-> {: .solution}
-{: .challenge}
+::::{admonition} A Jupyter notebook with Uproot available
+:class: important
+Can you setup a Jupyter notebook server with [Uproot](https://uproot.readthedocs.io/en/latest/index.html) available in Apptainer?
+
+Hint: Uproot can be installed using `pip`. And use the option `--break-system-packages`.
+New Python versions complain when installing packages without a virtual environment. You need that option to force the install.
+
+:::{admonition} Solution
+:class: dropdown
+```text
+Bootstrap: docker
+From: ubuntu:24.04
+
+%post
+    apt-get update -y
+    apt-get install -y python3
+    apt-get install -y python3-pip
+    apt-get install -y python3-notebook
+    pip install --break-system-packages uproot
+
+%startscript
+   jupyter notebook --port 8850
+```
+Confirm that Uproot is available opening a notebook and executing in a cell
+```python
+import uproot
+print(uproot.__doc__)
+```
+:::
+::::
+
+:::{admonition} Key Points
+:class: note
+- Instances allow to setup services via Apptainer images or definition files.
+- Code provided in Jupyter notebooks can be accompanied by a Apptainer/Singularity image with the environment needed for its execution, ensuring the reproducibility of the results.
+:::
 

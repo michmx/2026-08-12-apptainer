@@ -1,24 +1,21 @@
----
-title: "Containers and Images"
-teaching: 20
-exercises: 5
-questions:
-- "How to pull Apptainer images from the libraries?"
-- "How to run commands inside the containers?"
-objectives:
-- "Learn to search and pull images from the Sylabs Singularity library and Docker Hub."
-- "Interact with the containers using the command-line interface."
-keypoints:
-- Use `singularity --version` to know what you are using and to communicate it if asking for support
-- "A container can be started from a local `.sif` or directly with the URL of the image."
-- "Apptainer is also compatible with Docker images, providing access to the large collection of images hosted by Docker Hub."
-- Get a shell inside of your container with `apptainer shell <path/URL to image>`
-- Execute a command inside of your container with `apptainer exec <path/URL> <command>`
-- Bind outside directories with `--bind`
----
+# Containers and Images
+
+:::{admonition} Overview
+:class: note
+**Teaching:** 20 min | **Exercises:** 5 min
+
+**Questions**
+- How to pull Apptainer images from the libraries?
+- How to run commands inside the containers?
+
+**Objectives**
+- Learn to search and pull images from the Sylabs Singularity library and Docker Hub.
+- Interact with the containers using the command-line interface.
+:::
+
 <iframe width="427" height="251" src="https://www.youtube.com/embed/hiWQ1CNlxkE?list=PLwN-li4B10E3MtN4620yhGbctjTyQ9jna" title="Intro to Apptainer/Singularity #2 - Containers and Images"  frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
 
-# The Apptainer Command Line Interface
+## The Apptainer Command Line Interface
 
 Apptainer provides a command-line interface (CLI) to interact with the containers. You can search, build or run
 containers in a single line.
@@ -30,7 +27,7 @@ singularity --version
 # In the future you may need to use `apptainer --version`
 ```
 For this training we recommend Apptainer >= 1.0 or Singularity >= 3.5. Older versions may not have some of the features or behave differently.
-If you need to install or upgrade Apptainer/Singularity please refer to the [Setup section]({{ page.root }}{% link setup.md %}).
+If you need to install or upgrade Apptainer/Singularity please refer to the [Setup section](setup.md).
 When asking for support please remember to include the version of Apptainer or Singularity being used, as in the output of the above command.
 
 You can check the available options and subcommands using `--help`:
@@ -39,7 +36,7 @@ You can check the available options and subcommands using `--help`:
 apptainer --help
 ```
 
-# Downloading Images
+## Downloading Images
 
 Container Images are executables that bundle together all necessary components for an application or an environment,
 like a template for containers.
@@ -80,19 +77,20 @@ SylabsCloud    cloud.sycloud.io     YES     NO      NO
 ...
 ```
 
-> ## Remote Endpoints, Library API and OCI Registries
-> [Remotes](https://apptainer.org/docs/user/main/endpoint.html) are service endpoints Apptainer interacts with.
-> These include [Library API Registries](https://apptainer.org/docs/user/1.0/library_api.html),
-> [OCI Registries](https://apptainer.org/docs/user/1.0/docker_and_oci.html), and keyservers.
-> The first two are used to search, pull and push images.
-> The [Library](https://singularityhub.github.io/library-api/#/) API, `library://`,
-> was designed for SIF images, the [Singularity Image Format](https://github.com/apptainer/sif).
-> The [Docker](https://docs.docker.com/docker-hub/api/latest/)/[ORAS](https://oras.land/) API, `docker://`,
-> is used for Docker Hub, and other OCI ([Open Containers Initiative](https://opencontainers.org/)) registries.
-> These include [Quay.io](https://quay.io), [NVIDIA NGC](https://ngc.nvidia.com/),
-> the [GitHub Container Registry](https://github.com/features/packages),
-> [AWS ECR](https://docs.aws.amazon.com/AmazonECR/latest/userguide/registry_auth.html) and many more.
-{: .callout}
+:::{admonition} Remote Endpoints, Library API and OCI Registries
+:class: tip
+[Remotes](https://apptainer.org/docs/user/main/endpoint.html) are service endpoints Apptainer interacts with.
+These include [Library API Registries](https://apptainer.org/docs/user/1.0/library_api.html),
+[OCI Registries](https://apptainer.org/docs/user/1.0/docker_and_oci.html), and keyservers.
+The first two are used to search, pull and push images.
+The [Library](https://singularityhub.github.io/library-api/#/) API, `library://`,
+was designed for SIF images, the [Singularity Image Format](https://github.com/apptainer/sif).
+The [Docker](https://docs.docker.com/docker-hub/api/latest/)/[ORAS](https://oras.land/) API, `docker://`,
+is used for Docker Hub, and other OCI ([Open Containers Initiative](https://opencontainers.org/)) registries.
+These include [Quay.io](https://quay.io), [NVIDIA NGC](https://ngc.nvidia.com/),
+the [GitHub Container Registry](https://github.com/features/packages),
+[AWS ECR](https://docs.aws.amazon.com/AmazonECR/latest/userguide/registry_auth.html) and many more.
+:::
 
 Once you have setup a working registry you can use search and pull.
 The command `search` lists containers of interest
@@ -122,42 +120,42 @@ apptainer pull library://gmk/default/centos7-devel
 ```
 and the image is stored locally as a `.sif` file (`centos7-devel_latest.sif`, in this case).
 
-> ## Docker Images
->
-> Fortunately, Apptainer is also compatible with Docker images. There are many more registries with Docker images.
-> [Docker Hub](https://hub.docker.com/) is one of the largest libraries available,
-> and any image hosted on the hub can be easily downloaded with the `docker://` URL as reference:
-> ```bash
-> apptainer pull docker://centos:centos7
-> ```
-{: .callout}
+:::{admonition} Docker Images
+:class: tip
+Fortunately, Apptainer is also compatible with Docker images. There are many more registries with Docker images.
+[Docker Hub](https://hub.docker.com/) is one of the largest libraries available,
+and any image hosted on the hub can be easily downloaded with the `docker://` URL as reference:
+```bash
+apptainer pull docker://centos:centos7
+```
+:::
 
 
-> ## Docker Hub limit error
->
-> Docker Hub [limits the number of download](https://docs.docker.com/docker-hub/usage/) you can do from a single IP to 100.
-> This may happen in workshops, also because a single image may require multiple downloads.
-> You will see a TOOMANYREQUESTS error like:
-> ```
-> FATAL:   While making image from oci registry: error fetching image to cache: while building SIF from layers: conveyor failed to get:
-> GET https://index.docker.io/v2/library/almalinux/manifests/8:
-> TOOMANYREQUESTS: You have reached your unauthenticated pull rate limit. https://www.docker.com/increase-rate-limit
-> ```
-> The solution is to authenticate if you have a Docker Hub account, or to change IP address (i.e. work from another computer), or to find a different image registry.
-> For example here is the [Ubuntu gallery on AWS](https://gallery.ecr.aws/ubuntu/ubuntu) where you can find the links.
-> In apptainer you'll have to add the server name not to use the default Docker Hub, e.g.
-> ```bash
-> apptainer pull docker://public.ecr.aws/ubuntu/ubuntu:24.04
-> ```
-> *Keep this in mind for later if you see the error!*
-{: .callout}
+:::{admonition} Docker Hub limit error
+:class: tip
+Docker Hub [limits the number of download](https://docs.docker.com/docker-hub/usage/) you can do from a single IP to 100.
+This may happen in workshops, also because a single image may require multiple downloads.
+You will see a TOOMANYREQUESTS error like:
+```text
+FATAL:   While making image from oci registry: error fetching image to cache: while building SIF from layers: conveyor failed to get:
+GET https://index.docker.io/v2/library/almalinux/manifests/8:
+TOOMANYREQUESTS: You have reached your unauthenticated pull rate limit. https://www.docker.com/increase-rate-limit
+```
+The solution is to authenticate if you have a Docker Hub account, or to change IP address (i.e. work from another computer), or to find a different image registry.
+For example here is the [Ubuntu gallery on AWS](https://gallery.ecr.aws/ubuntu/ubuntu) where you can find the links.
+In apptainer you'll have to add the server name not to use the default Docker Hub, e.g.
+```bash
+apptainer pull docker://public.ecr.aws/ubuntu/ubuntu:24.04
+```
+*Keep this in mind for later if you see the error!*
+:::
 
-# Running Containers
+## Running Containers
 
 There are several ways to interact with images and start containers. Here we will review how to initialize a shell
 environment and how to execute directly a command.
 
-## Initializing a shell and exiting it
+### Initializing a shell and exiting it
 
 The `shell` command initializes a new interactive shell inside the container.
 
@@ -189,7 +187,7 @@ or hitting `Ctrl + D`.
 Note that when exiting from the Apptainer image all the running processes are killed (stopped).
 Changes saved into bound directories are preserved. By default anything else in the container is lost (we'll see later about writable images).
 
-## Bound directories
+### Bound directories
 
 When an outside directory is accessible also inside Apptainer we say it is *bound*, or bind mounted. The path to access it
 may differ but anything you do to its content outside is visible inside and vice-versa.
@@ -205,7 +203,7 @@ apptainer shell --bind /cvmfs:/mnt centos7-devel_latest.sif
 Here, the colon `:` separates the path to the directory on the host (`/cvmfs/`) from the mounting point (`/mnt/`) inside of the
 container.
 If you do not have CVMFS, you can try the command with [`/opt`](https://stackoverflow.com/a/12649407/), for example.
-More information on binding is provided [later]({{ site.baseurl }}/07-file-sharing).
+More information on binding is provided [later](07-file-sharing.md).
 
 Let's check that this works:
 
@@ -216,27 +214,28 @@ bootstrap.sh               external             slc5_amd64_gcc434  slc7_aarch64_
 ...
 ```
 
-> ## URLs as input
-> Each of the different commands to set a container from a local `.sif` also accepts the URL of the image
-> as input. For example, starting a shell with Rocky Linux 8 is as easy as
-> ```bash
-> apptainer shell docker://rockylinux:8
-> ```
-> ```text
-> INFO:    Converting OCI blobs to SIF format
-> INFO:    Starting build...
-> Getting image source signatures
-> Copying blob 7ecefaa6bd84 done
-> Copying config a8f7ea56a4 done
-> Writing manifest to image destination
-> Storing signatures
-> 2024/02/24 20:32:30  info unpack layer: sha256:7ecefaa6bd84a24f90dbe7872f28a94e88520a07941d553579434034d9dca399
-> INFO:    Creating SIF file...
-> Apptainer>
-> ```
-{: .callout}
+:::{admonition} URLs as input
+:class: tip
+Each of the different commands to set a container from a local `.sif` also accepts the URL of the image
+as input. For example, starting a shell with Rocky Linux 8 is as easy as
+```bash
+apptainer shell docker://rockylinux:8
+```
+```text
+INFO:    Converting OCI blobs to SIF format
+INFO:    Starting build...
+Getting image source signatures
+Copying blob 7ecefaa6bd84 done
+Copying config a8f7ea56a4 done
+Writing manifest to image destination
+Storing signatures
+2024/02/24 20:32:30  info unpack layer: sha256:7ecefaa6bd84a24f90dbe7872f28a94e88520a07941d553579434034d9dca399
+INFO:    Creating SIF file...
+Apptainer>
+```
+:::
 
-## Executing commands
+### Executing commands
 
 The command `exec` starts the container from a specified image and executes a command inside it.
 Let's use the official [Docker image of ROOT](https://hub.docker.com/r/rootproject/root) to start [ROOT](https://root.cern/)
@@ -268,25 +267,35 @@ root [0]
 And just like that, ROOT can be used in any laptop, large-scale cluster or grid system
 with Apptainer available.
 
-> ## Execute Python with PyROOT available
->
-> Using the official Docker image of ROOT, start a Python session with PyROOT available.
->
-> > ## Solution
-> >
-> > ```bash
-> > apptainer exec --cleanenv docker://rootproject/root python3
-> > ```
-> > `--cleanenv` is optional but makes the command more robust (see Episode 4)
-> >
-> > ```text
-> > INFO:    Using cached SIF image
-> > Python 3.10.12 (main, Nov 20 2023, 15:14:05) [GCC 11.4.0] on linux
-> > Type "help", "copyright", "credits" or "license" for more information.
-> > >>> import ROOT
-> > >>> # Now you can work with PyROOT, creating a histogram for example
-> > >>> h = ROOT.TH1F("myHistogram", "myTitle", 50, -10, 10)
-> > ```
-> {: .solution}
-{: .challenge}
+::::{admonition} Execute Python with PyROOT available
+:class: important
+Using the official Docker image of ROOT, start a Python session with PyROOT available.
+
+:::{admonition} Solution
+:class: dropdown
+```bash
+apptainer exec --cleanenv docker://rootproject/root python3
+```
+`--cleanenv` is optional but makes the command more robust (see Episode 4)
+
+```text
+INFO:    Using cached SIF image
+Python 3.10.12 (main, Nov 20 2023, 15:14:05) [GCC 11.4.0] on linux
+Type "help", "copyright", "credits" or "license" for more information.
+>>> import ROOT
+>>> # Now you can work with PyROOT, creating a histogram for example
+>>> h = ROOT.TH1F("myHistogram", "myTitle", 50, -10, 10)
+```
+:::
+::::
+
+:::{admonition} Key Points
+:class: note
+- Use `singularity --version` to know what you are using and to communicate it if asking for support
+- A container can be started from a local `.sif` or directly with the URL of the image.
+- Apptainer is also compatible with Docker images, providing access to the large collection of images hosted by Docker Hub.
+- Get a shell inside of your container with `apptainer shell <path/URL to image>`
+- Execute a command inside of your container with `apptainer exec <path/URL> <command>`
+- Bind outside directories with `--bind`
+:::
 

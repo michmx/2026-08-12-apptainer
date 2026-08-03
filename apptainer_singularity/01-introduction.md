@@ -1,20 +1,20 @@
----
-title: "Introduction"
-teaching: 10
-exercises:
-questions:
-- "What issues motivated the creation of Apptainer/Singularity?"
-- "What are the differences between Docker, Apptainer and Singularity?"
-objectives:
-- "Learn the design goals behind Apptainer/Singularity."
-keypoints:
-- "Apptainer/Singularity is a container platform designed by and for scientists."
-- "Single-file based container images facilitates the distribution."
-- "Secure. User inside the container = user outside."
----
+# Introduction
+
+:::{admonition} Overview
+:class: note
+**Teaching:** 10 min
+
+**Questions**
+- What issues motivated the creation of Apptainer/Singularity?
+- What are the differences between Docker, Apptainer and Singularity?
+
+**Objectives**
+- Learn the design goals behind Apptainer/Singularity.
+:::
+
 <iframe width="427" height="251" src="https://www.youtube.com/embed/yAVeZ3gP2ag?list=PLwN-li4B10E3MtN4620yhGbctjTyQ9jna" title="Intro to Apptainer/Singularity #1 - Introduction"  frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
 
-# Working with containers
+## Working with containers
 
 Containers are packages of software that encapsulates a system environment. An OS-level virtualization is delivered
 in a container, and any program running on it will use the contextualization isolated inside the container. They have
@@ -29,17 +29,18 @@ environment used at that time.
 * All the necessary packages to process data can be easily distributed in containers, independently of the operating
 system available on the sites.
 
-> ## What about virtual machines?
-> Virtual Machines (VMs) provide the same isolation and reproducibility.
-> However, they emulate the hardware, or at least the full OS, so they are computationally heavier to run,
-> require bigger files when distributed and are less flexible than containers, that run only what you require to be different.
-> All containers use the same OS Kernel of the host and contain only Libraries and the App that run in User space.
-> See [this article](https://dockerlabs.collabnix.com/beginners/difference-vm-containers.html) for a more detailed comparison.
-> And if you are curious about the Linux Kernel mechanisms that make containers possible you can check [this blog pos](https://q15928.github.io/2021/01/09/container-101/
+:::{admonition} What about virtual machines?
+:class: tip
+Virtual Machines (VMs) provide the same isolation and reproducibility.
+However, they emulate the hardware, or at least the full OS, so they are computationally heavier to run,
+require bigger files when distributed and are less flexible than containers, that run only what you require to be different.
+All containers use the same OS Kernel of the host and contain only Libraries and the App that run in User space.
+See [this article](https://dockerlabs.collabnix.com/beginners/difference-vm-containers.html) for a more detailed comparison.
+And if you are curious about the Linux Kernel mechanisms that make containers possible you can check [this blog pos](https://q15928.github.io/2021/01/09/container-101/
 ).
-{: .callout}
+:::
 
-# Why Apptainer/Singularity?
+## Why Apptainer/Singularity?
 
 Many solutions are available to work with containers, for example [Docker](https://www.docker.com/),
 one of the most popular platforms, or the free OSS [Podman](https://podman.io/).
@@ -61,12 +62,13 @@ a few steps in most of the cases, and its design presents key advantages for the
 <img src="https://apptainer.org/docs/user/main/_static/logo.png" alt="Apptainer/Singularity" width="220">
 </a>
 
-> ## Docker and Apptainer/Singularity
-> As you will learn in this training module, Apptainer/Singularity [*can* be used with Docker images](https://apptainer.org/docs/user/main/docker_and_oci.html).
-> If you want to learn more about Docker or Podman, check out [our podman/docker training](https://hsf-training.github.io/hsf-training-docker/index.html).
-{: .callout}
+:::{admonition} Docker and Apptainer/Singularity
+:class: tip
+As you will learn in this training module, Apptainer/Singularity [*can* be used with Docker images](https://apptainer.org/docs/user/main/docker_and_oci.html).
+If you want to learn more about Docker or Podman, check out [our podman/docker training](https://hsf-training.github.io/hsf-training-docker/index.html).
+:::
 
-# Apptainer vs Singularity
+## Apptainer vs Singularity
 In these lessons you see the name *Apptainer* or *Apptainer/Singularity*, and the command `apptainer`.
 As stated in the [move and renaming announcement](https://apptainer.org/news/community-announcement-20211130/), "Singularity IS Apptainer".
 Currently there are three products derived from the original Singularity project from 2015:
@@ -83,11 +85,17 @@ If you are using SingularityPro or SingularityCE, just replace the command `appt
 If you have older scripts still using the `singularity` command and `SINGULARITY...` variables, they will work also in Apptainer because it is providing the `singularity` alias
 and [full compatibility with the previous Singularity environment](https://apptainer.org/docs/user/main/singularity_compatibility.html).
 
-# Documentation
+## Documentation
 
 The [official Apptainer documentation](https://apptainer.org/docs/) is available online. Contains basic and advanced
 usage of Apptainer/Singularity beyond the scope of this training document. Take a look and read the nice
 [introduction](https://apptainer.org/docs/user/main/introduction.html), explaining the motivation behind the
 creation of Apptainer/Singularity.
 
+:::{admonition} Key Points
+:class: note
+- Apptainer/Singularity is a container platform designed by and for scientists.
+- Single-file based container images facilitates the distribution.
+- Secure. User inside the container = user outside.
+:::
 
