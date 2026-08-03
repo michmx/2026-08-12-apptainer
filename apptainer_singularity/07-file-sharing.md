@@ -153,4 +153,3 @@ You can also bind multiple directories using commas between each `source:destina
 - Some paths are mounted by default by Apptainer.
 - Additional directories to bind can be defined using the `--bind` option or the environment variable `$SINGULARITY_BIND`.
 :::
-

@@ -21,4 +21,6 @@ repos:
     rev: "v2.4.2"
     hooks:
       - id: codespell
+        # "mis": /cvmfs/oasis.opensciencegrid.org/mis/ path; "gaus": ROOT's FillRandom("gaus", ...)
+        args: ["-L", "mis,gaus"]
         files: '.*\.md'

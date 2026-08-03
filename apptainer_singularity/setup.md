@@ -125,4 +125,3 @@ If the above is not possible and you cannot use the CVMFS distribution you have 
 [this paper](https://indico.cern.ch/event/885212/contributions/4120683/attachments/2181040/3684201/CernVMWorkshopCvmfsExec20210201.pdf).
 
 If user namespaces are not enabled, apptainers/singularity is not installed, and you have no root access to the host, then your use of apptainer/singularity will be very limited even if you install it with one of the three methods above. You need to request to your system administrator to either [install Apptainer/Singularity](https://apptainer.org/docs/user/main/quick_start.html#apptainer-on-a-shared-resource) or to enable [user namespaces](https://apptainer.org/docs/admin/main/user_namespace.html).
-

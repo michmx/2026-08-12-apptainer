@@ -112,4 +112,3 @@ The above script is designed to build and publish an Apptainer image with [GitHu
 - Python packages can be installed in apptainer images along with ubuntu packages.
 - It is possible to publish and share apptainer images over github packages.
 :::
-

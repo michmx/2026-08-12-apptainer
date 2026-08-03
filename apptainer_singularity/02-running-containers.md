@@ -298,4 +298,3 @@ Type "help", "copyright", "credits" or "license" for more information.
 - Execute a command inside of your container with `apptainer exec <path/URL> <command>`
 - Bind outside directories with `--bind`
 :::
-

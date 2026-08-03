@@ -308,4 +308,3 @@ print(uproot.__doc__)
 - Instances allow to setup services via Apptainer images or definition files.
 - Code provided in Jupyter notebooks can be accompanied by a Apptainer/Singularity image with the environment needed for its execution, ensuring the reproducibility of the results.
 :::
-

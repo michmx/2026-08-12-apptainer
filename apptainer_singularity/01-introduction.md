@@ -98,4 +98,3 @@ creation of Apptainer/Singularity.
 - Single-file based container images facilitates the distribution.
 - Secure. User inside the container = user outside.
 :::
-
