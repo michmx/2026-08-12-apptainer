@@ -1,0 +1,14 @@
+# Table of contents
+# Learn more at https://jupyterbook.org/customize/toc.html
+
+format: jb-book
+root: intro
+chapters:
+- file: setup
+- file: 01-introduction
+- file: 02-running-containers
+- file: 04-building-containers
+- file: 05-definition-files
+- file: 07-file-sharing
+- file: 08-instances
+- file: 09-bonus-episode
