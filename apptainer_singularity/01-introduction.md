@@ -91,4 +91,3 @@ usage of Apptainer/Singularity beyond the scope of this training document. Take 
 creation of Apptainer/Singularity.
 
 
-{% include links.md %}

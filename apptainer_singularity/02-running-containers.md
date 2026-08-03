@@ -58,21 +58,19 @@ You can change that running these commands (documented [here](https://apptainer.
 ```bash
 apptainer remote add --no-login SylabsCloud cloud.sycloud.io
 ```
-~~~
+```text
 INFO:    Remote "SylabsCloud" added.
-~~~
-{: .output}
+```
 ```bash
 apptainer remote use SylabsCloud
 ```
-~~~
+```text
 INFO:    Remote "SylabsCloud" now in use.
-~~~
-{: .output}
+```
 ```bash
 apptainer remote list
 ```
-~~~
+```text
 Cloud Services Endpoints
 ========================
 
@@ -80,8 +78,7 @@ NAME           URI                  ACTIVE  GLOBAL  EXCLUSIVE
 DefaultRemote  cloud.apptainer.org  NO      YES     NO
 SylabsCloud    cloud.sycloud.io     YES     NO      NO
 ...
-~~~
-{: .output}
+```
 
 > ## Remote Endpoints, Library API and OCI Registries
 > [Remotes](https://apptainer.org/docs/user/main/endpoint.html) are service endpoints Apptainer interacts with.
@@ -107,7 +104,7 @@ For example:
 apptainer search centos7
 ```
 
-~~~
+```text
 No users found for 'centos7'
 
 Found 1 collections for 'centos7'
@@ -117,8 +114,7 @@ Found 15 containers for 'centos7'
         library://gmk/default/centos7-devel
                 Tags: latest
 ...
-~~~
-{: .output}
+```
 
 Downloading an image from the Container Library is pretty straightforward:
 ```bash
@@ -169,10 +165,9 @@ The `shell` command initializes a new interactive shell inside the container.
 apptainer shell centos7-devel_latest.sif
 ```
 
-~~~
+```text
 Apptainer>
-~~~
-{: .output}
+```
 In this case, the container works as a lightweight virtual machine in which you can execute commands.
 Remember, inside the container you have the same user and permissions.
 
@@ -180,10 +175,9 @@ Remember, inside the container you have the same user and permissions.
 Apptainer> id
 ```
 
-~~~
+```text
 uid=1001(myuser) gid=1001(myuser) groups=1001(myuser),500(myothergroup)
-~~~
-{: .output}
+```
 
 Now quit the container by typing
 
@@ -215,13 +209,12 @@ More information on binding is provided [later]({{ site.baseurl }}/07-file-shari
 
 Let's check that this works:
 
-~~~
+```text
 Apptainer> ls /mnt/cms.cern.ch
 bin                        etc                  SITECONF           slc7_aarch64_gcc530
 bootstrap.sh               external             slc5_amd64_gcc434  slc7_aarch64_gcc700
 ...
-~~~
-{: .output}
+```
 
 > ## URLs as input
 > Each of the different commands to set a container from a local `.sif` also accepts the URL of the image
@@ -229,7 +222,7 @@ bootstrap.sh               external             slc5_amd64_gcc434  slc7_aarch64_
 > ```bash
 > apptainer shell docker://rockylinux:8
 > ```
-> ~~~
+> ```text
 > INFO:    Converting OCI blobs to SIF format
 > INFO:    Starting build...
 > Getting image source signatures
@@ -240,8 +233,7 @@ bootstrap.sh               external             slc5_amd64_gcc434  slc7_aarch64_
 > 2024/02/24 20:32:30  info unpack layer: sha256:7ecefaa6bd84a24f90dbe7872f28a94e88520a07941d553579434034d9dca399
 > INFO:    Creating SIF file...
 > Apptainer>
-> ~~~
-> {: .output}
+> ```
 {: .callout}
 
 ## Executing commands
@@ -254,7 +246,7 @@ inside a container:
 apptainer exec docker://rootproject/root root -b
 ```
 
-~~~
+```text
 INFO:    Converting OCI blobs to SIF format
 INFO:    Starting build...
 ...
@@ -271,8 +263,7 @@ INFO:    Creating SIF file...
 
 root [0]
 
-~~~
-{: .output}
+```
 
 And just like that, ROOT can be used in any laptop, large-scale cluster or grid system
 with Apptainer available.
@@ -288,16 +279,14 @@ with Apptainer available.
 > > ```
 > > `--cleanenv` is optional but makes the command more robust (see Episode 4)
 > >
-> > ~~~
+> > ```text
 > > INFO:    Using cached SIF image
 > > Python 3.10.12 (main, Nov 20 2023, 15:14:05) [GCC 11.4.0] on linux
 > > Type "help", "copyright", "credits" or "license" for more information.
 > > >>> import ROOT
 > > >>> # Now you can work with PyROOT, creating a histogram for example
 > > >>> h = ROOT.TH1F("myHistogram", "myTitle", 50, -10, 10)
-> > ~~~
-> > {: .output}
+> > ```
 > {: .solution}
 {: .challenge}
 
-{% include links.md %}

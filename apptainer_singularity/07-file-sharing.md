@@ -42,19 +42,18 @@ current directory
 ```bash
 pwd
 ```
-~~~
+```text
 /home/myuser/somedirectory
-~~~
-{: .output}
+```
 Open a shell inside the container and try to use `pwd` again
 ```bash
 apptainer shell rootInUbuntu.sif
 
 Apptainer> pwd
 ```
-~~~
+```text
 /home/myuser/somedirectory
-~~~
+```
 you will notice that the files stored on the host are located inside the container! As we explained above, Apptainer
 mounts automatically your `$HOME` inside the container.
 
@@ -75,10 +74,9 @@ and you will notice that `$HOME` is not mounted anymore
 ```bash
 ls /home/myuser
 ```
-~~~
+```text
 ls: cannot access '/home/myuser': No such file or directory
-~~~
-{: .output}
+```
 
 Note how we disabled both `home` and `cwd` (current working directory). This because if you are running the apptainer
 command from your home directory, even if you use `--no-mount home` the home directory may still be mounted
@@ -113,10 +111,9 @@ This will bind the directory `mydata/` from the host as `/data` inside the conta
 ```bash
 ls -l /data
 ```
-~~~
+```text
 -rw-rw-r-- 1 myuser myuser 20 Jan  2 12:46 muonMass.txt
-~~~
-{: .output}
+```
 
 Now you can use the mass of the muon from a root-level directory!
 
@@ -151,4 +148,3 @@ will bind CVMFS to all your Apptainer containers (`/cvmfs` must be available in 
 You can also bind multiple directories using commas between each `source:destination`.
 
 
-{% include links.md %}

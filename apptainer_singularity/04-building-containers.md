@@ -60,10 +60,9 @@ Finally, the installation of new components will require superuser access inside
 apptainer shell --writable --cleanenv --fakeroot myAlma9
 Apptainer> whoami
 ```
-~~~
+```text
 root
-~~~
-{: .output}
+```
 `--cleanenv` clears the environment. It has been added to make sure that the eventual setting of
 variables on the host is not affecting the container.
 Variables like PYTHONPATH or PYTHONHOME are affecting the Python execution inside the container.
@@ -149,7 +148,7 @@ Apptainer> python3
 >>> import pythia8
 >>> pythia = pythia8.Pythia()
 ```
-~~~
+```text
  *------------------------------------------------------------------------------------*
  |                                                                                    |
  |  *------------------------------------------------------------------------------*  |
@@ -167,8 +166,7 @@ Apptainer> python3
  |  *------------------------------------------------------------------------------*  |
  |                                                                                    |
  *------------------------------------------------------------------------------------*
-~~~
-{: .output}
+```
 
 Notice that when installing from source we need to define the environment variables `PYTHONPATH` and `LD_LIBRARY_PATH` in order to use Pythia on Python.
 We will automate this in the next section.
@@ -194,11 +192,10 @@ We will automate this in the next section.
 > > ```bash
 > > apptainer exec myPython python -c "import uproot; print(uproot.__doc__)"
 > > ```
-> > ~~~
+> > ```text
 > > Uproot: ROOT I/O in pure Python and NumPy.
 > > ...
-> > ~~~
-> > {: .output}
+> > ```
 > > Notice how we did not need neither `--writable ` nor `--fakeroot` for the installation, but everything worked fine since pip installs user packages in the user $HOME directory.
 > > You will see new files under $HOME/.local/.
 > > In addition, Apptainer/Singularity by default mounts the user home directory as read+write, even if the container is read-only.

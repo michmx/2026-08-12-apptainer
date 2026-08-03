@@ -46,11 +46,10 @@ Confirm that the instance is running using the `instance list` command
 ```bash
 apptainer instance list
 ```
-~~~
+```text
 INSTANCE NAME    PID      IP    IMAGE
 myalma9          3277300        /tmp/myuser/almalinux_9.sif
-~~~
-{: .output}
+```
 
 To interact with the instance, the commands `exec` and `shell` are available. The instance must be referred as
 `instance://name`.
@@ -143,7 +142,7 @@ You can confirm in the terminal that the web service is up using `curl` as
 ```bash
 curl http://localhost:8850
 ```
-~~~
+```text
 <!DOCTYPE html>
 <html>
 <head>
@@ -154,8 +153,7 @@ curl http://localhost:8850
 <p>If you see this page, my awesome service is up and running.</p>
 </body>
 </html>
-~~~
-{: .output}
+```
 
 If you are executing Apptainer locally, try to open http://localhost:8850.
 
@@ -231,11 +229,10 @@ and confirm that the instance is up
 ```bash
 apptainer instance list
 ```
-~~~
+```text
 INSTANCE NAME    PID      IP    IMAGE
 mynotebook       10720          /home/myuser/jupyterWithROOT.sif
-~~~
-{: .output}
+```
 
 If you go to http://localhost:8850 (with SSH tunneling if needed), you will find out that for security reasons the
 Jupyter webapp will ask for an access token. Fortunately, you can get the token listing the URL of active servers using
@@ -243,11 +240,10 @@ the `jupyter notebook list` command. To execute the command inside the instance,
 ```bash
 apptainer exec instance://mynotebook jupyter notebook list
 ```
-~~~
+```text
 Currently running servers:
 http://localhost:8850/?token=12asldc9b2084f9b664b39a6246022312bc9c605b :: /home/myHome
-~~~
-{: .output}
+```
 
 > ## Notebook starting on a different port!
 > If the chosen port for the Notebook (8850 stated in the SIF file) is not available,
@@ -305,4 +301,3 @@ is available!
 > {: .solution}
 {: .challenge}
 
-{% include links.md %}

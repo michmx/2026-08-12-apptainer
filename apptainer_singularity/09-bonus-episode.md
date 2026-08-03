@@ -65,7 +65,6 @@ To do so, one needs to use GitHub CI/CD. A step-by-step guide is presented here.
 * **Step 4**: Copy-paste the content above and add to the Apptainer file. (In principle it is possible to build this image locally, but we will not do that here, as we wish to build it with GitHub CI/CD).
 * **Step 5**: In the `apptainer-build-deploy.yml` file, add the following content:
 
-{% raw %}
 ```text
 name: Apptainer Build Deploy
 
@@ -101,11 +100,9 @@ jobs:
            echo ${{ secrets.GITHUB_TOKEN }} | apptainer registry login -u ${{ github.repository_owner }} --password-stdin oras://ghcr.io
            apptainer push container.sif oras://ghcr.io/${GITHUB_REPOSITORY}:${tag}
 ```
-{% endraw %}
 
 The above script is designed to build and publish an Apptainer image with [GitHub packages](https://github.com/features/packages).
 
 
 * **Step 6**: Add LICENSE and README as recommended in the [SW Carpentry Git-Novice Lesson](https://swcarpentry.github.io/git-novice/), and then the repository is good to go.
 
-{% include links.md %}

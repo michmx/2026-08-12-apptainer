@@ -77,7 +77,7 @@ Following the ROOT instructions to
 [download a pre-compiled binary distribution](https://root.cern/install/#download-a-pre-compiled-binary-distribution),
 the definition file will look like
 
-~~~
+```text
 BootStrap: docker
 From: ubuntu:24.04
 
@@ -106,8 +106,7 @@ From: ubuntu:24.04
 %help
     Example container running the RooFit tutorial and producing the rf101_basics.png image.
     The container provides ROOT with RooFit and Python integration running on Ubuntu.
-~~~
-{: .source}
+```
 
 Let's take a look at the [definition file](https://apptainer.org/docs/user/main/definition_files.html):
 * The first two lines define the base image. In this case, the image `ubuntu:20.04` from Docker Hub is used.
@@ -137,7 +136,7 @@ simply by calling the container as an executable
 ./rootInUbuntu.sif
 ```
 
-~~~
+```text
 RooFit v3.60 -- Developed by Wouter Verkerke and David Kirkby
                 Copyright (C) 2000-2013 NIKHEF, University of California & Stanford University
                 All rights reserved, please read http://roofit.sourceforge.net/license.txt
@@ -150,8 +149,7 @@ RooFit v3.60 -- Developed by Wouter Verkerke and David Kirkby
 RooRealVar::mean = 1.01746 +/- 0.0300144  L(-10 - 10)
 RooRealVar::sigma = 2.9787 +/- 0.0219217  L(0.1 - 10)
 Info in <TCanvas::Print>: png file rf101_basics.png has been created
-~~~
-{: .output}
+```
 
 You will find the output file `rf101_basics.png` in the location where the container was executed.
 If you don't have a DISPLAY setup, Root may complain. Ignore the error messages, the image will be created anyway,
@@ -197,7 +195,7 @@ and [distribute custom images via CVMFS](https://portal.osg-htc.org/documentatio
 > (Tip: notice that main01.py requires `Makefile.inc`).
 >
 > > ## Solution
-> > ~~~
+> > ```text
 > > BootStrap: docker
 > > From: almalinux:9
 > >
@@ -226,8 +224,7 @@ and [distribute custom images via CVMFS](https://portal.osg-htc.org/documentatio
 > > %help
 > >     Container providing Pythia 8.310. Execute the container to run an example.
 > >     Open it in a shell to use the Pythia installation with Python 3.9
-> > ~~~
-> > {: .source}
+> > ```
 > >
 > > Build your container executing
 > >
