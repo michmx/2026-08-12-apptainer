@@ -1,10 +1,8 @@
----
-title: Setup
----
+# Setup
 
 <iframe width="427" height="251" src="https://www.youtube.com/embed/g0cCErlveiI?list=PLKZ9c4ONm-VkxWW98Gcn9H6WwykMiqtnF" title="Intro to Apptainer/Singularity #0 - Setup" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
 
-In this document we use the names *Apptainer* and *Singularity* interchangeably. See the [Introduction]({{ page.root }}{% link _episodes/01-introduction.md %})
+In this document we use the names *Apptainer* and *Singularity* interchangeably. See the [Introduction](01-introduction.md)
 for more details about existing Apptainer and Singularity versions and the differences between them.
 
 ## Option 1: Use pre-installed apptainer on a cluster
@@ -127,5 +125,3 @@ If the above is not possible and you cannot use the CVMFS distribution you have 
 [this paper](https://indico.cern.ch/event/885212/contributions/4120683/attachments/2181040/3684201/CernVMWorkshopCvmfsExec20210201.pdf).
 
 If user namespaces are not enabled, apptainers/singularity is not installed, and you have no root access to the host, then your use of apptainer/singularity will be very limited even if you install it with one of the three methods above. You need to request to your system administrator to either [install Apptainer/Singularity](https://apptainer.org/docs/user/main/quick_start.html#apptainer-on-a-shared-resource) or to enable [user namespaces](https://apptainer.org/docs/admin/main/user_namespace.html).
-
-{% include links.md %}

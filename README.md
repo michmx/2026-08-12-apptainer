@@ -8,9 +8,9 @@
 [![Twitter Follow][twitter-badge]][twitter]
 
 [![pre-commit.ci status](https://results.pre-commit.ci/badge/github/hsf-training/hsf-training-singularity-webpage/gh-pages.svg)](https://results.pre-commit.ci/latest/github/hsf-training/hsf-training-singularity-webpage/gh-pages)
-[![pages-build-deployment](https://github.com/hsf-training/hsf-training-singularity-webpage/actions/workflows/pages/pages-build-deployment/badge.svg)](https://github.com/hsf-training/hsf-training-singularity-webpage/actions/workflows/pages/pages-build-deployment)
+[![jupyter-book](https://github.com/hsf-training/hsf-training-singularity-webpage/actions/workflows/book.yml/badge.svg)](https://github.com/hsf-training/hsf-training-singularity-webpage/actions/workflows/book.yml)
 
-This repository generates the corresponding lesson website from [The Carpentries](https://carpentries.org/) repertoire of lessons.
+This repository generates the corresponding lesson website as a [Jupyter Book](https://jupyterbook.org/).
 
 ## What is Apptainer/Singularity?
 
@@ -23,8 +23,6 @@ Apptainer (formerly known as Singularity) is a free and open-source container pl
 Emoji key: 🎥 (full video recordings available), ⛏️ (hackathon)
 
 ## 🤗 Contributing
-<!-- CENTRALLY MAINTAINED SECTION -->
-<!-- Remove the above marker to disable having this section be overwritten -->
 
 We welcome all contributions to improve the lesson! Maintainers will do their best to help you if you have any
 questions, concerns, or experience any difficulties along the way.
@@ -32,19 +30,19 @@ questions, concerns, or experience any difficulties along the way.
 If you make non-trivial changes (i.e., more than fixing a simple typo), you are eligible to be added to the [HSF Training Community page][hsf-training-community],
 as well as to the list of contributors [below](#contributors-).
 
-We'd like to ask you to familiarize yourself with our [Contribution Guide](CONTRIBUTING.md) and have a look at
-the [more detailed guidelines][lesson-example] on proper formatting, ways to render the lesson locally, and even
-how to write new episodes.
+We'd like to ask you to familiarize yourself with our [Contribution Guide](CONTRIBUTING.md).
 
-Quick summary of how to get a local preview: Install [jekyll][jekyll] and then run
+Quick summary of how to get a local preview: the lesson pages live in `apptainer_singularity/`
+and are built with [Jupyter Book](https://jupyterbook.org/):
 
+```bash
+python3 -m venv .venv && source .venv/bin/activate
+pip install -r requirements.txt
+jupyter-book build apptainer_singularity/
+python -m http.server -d apptainer_singularity/_build/html 8000
 ```
-bundle install
-bundle update
-bundle exec jekyll serve
-```
 
-Unless we change framework versions, only the last command needs to be typed after the first time.
+New pages must be added to `apptainer_singularity/_toc.yml` to be included in the build.
 
 Before committing anything, we also ask you to install the [pre-commit][pre-commit] hooks of this repository:
 
@@ -58,12 +56,6 @@ repository. For making your contribution, we use the GitHub flow, which is
 nicely explained in the chapter [Contributing to a Project][progit] in Pro Git
 by Scott Chacon.
 Look for the tag [![good_first_issue]][gfi-badge], which marks particularly simple issues to get you started.
-
-<!-- END CENTRALLY MAINTAINED SECTION -->
-
-## Citation
-
-To cite this lesson, please consult with [CITATION](CITATION)
 
 ## 💖 Authors
 
@@ -97,7 +89,6 @@ This project follows the [all-contributors](https://github.com/all-contributors/
 
 
 
-[lesson-example]: https://carpentries.github.io/lesson-example
 [pre-commit]: https://pre-commit.com/
 [hsf-training-community]: https://hepsoftwarefoundation.org/training/community
 [hsf-training-center]: https://hepsoftwarefoundation.org/training/curriculum.html
@@ -105,7 +96,6 @@ This project follows the [all-contributors](https://github.com/all-contributors/
 [schools]: https://hepsoftwarefoundation.org/Schools/events.html
 [issues]: https://github.com/hsf-training/hsf-training-singularity-webpage/issues
 [progit]: http://git-scm.com/book/en/v2/GitHub-Contributing-to-a-Project
-[jekyll]: https://jekyllrb.com/
 [allcontrib-emoji-key]: https://allcontributors.org/docs/en/emoji-key
 [gfi-badge]: https://img.shields.io/badge/-good%20first%20issue-gold.svg
 [schools-badge]: https://img.shields.io/badge/upcoming%20events-browse-ff69b4

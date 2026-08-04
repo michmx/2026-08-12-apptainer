@@ -1,14 +1,16 @@
----
-title: "Containers from definition files"
-teaching: 20
-exercises: 20
-questions:
-- "How to easily build and deploy containers from a single definition file?"
-objectives:
-- "Create a container from a definition file."
-keypoints:
-- "An Apptainer definition file provides an easy way to build and deploy containers."
----
+# Containers from definition files
+
+:::{admonition} Overview
+:class: note
+**Teaching:** 20 min | **Exercises:** 20 min
+
+**Questions**
+- How to easily build and deploy containers from a single definition file?
+
+**Objectives**
+- Create a container from a definition file.
+:::
+
 <iframe width="427" height="251" src="https://www.youtube.com/embed/aD_voqe60DA?list=PLwN-li4B10E3MtN4620yhGbctjTyQ9jna" title="Intro to Apptainer/Singularity #4 - Definition files"  frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
 
 As shown in the previous chapter, building containers with an interactive session may take several steps,
@@ -60,11 +62,12 @@ Finally the `#` hash is used to include comments within the definition file.
 ### Deleting Apptainer image
 To delete the hello-world Apptainer image, simply delete the `hello-world.sif` file.
 
-> ## `apptainer delete`
-> Note that there is also a `apptainer delete` command, but it is to delete an image from a remote library.
-> To learn more about using remote endpoints and pulling and pushing images from or to libraries, read
-> [Remote Endpoints](https://apptainer.org/docs/user/main/endpoint.html) and [Library API Registries](https://apptainer.org/docs/user/main/library_api.html).
-{: .callout}
+:::{admonition} `apptainer delete`
+:class: tip
+Note that there is also a `apptainer delete` command, but it is to delete an image from a remote library.
+To learn more about using remote endpoints and pulling and pushing images from or to libraries, read
+[Remote Endpoints](https://apptainer.org/docs/user/main/endpoint.html) and [Library API Registries](https://apptainer.org/docs/user/main/library_api.html).
+:::
 
 
 ## Example of a more elaborated definition file
@@ -77,7 +80,7 @@ Following the ROOT instructions to
 [download a pre-compiled binary distribution](https://root.cern/install/#download-a-pre-compiled-binary-distribution),
 the definition file will look like
 
-~~~
+```text
 BootStrap: docker
 From: ubuntu:24.04
 
@@ -106,8 +109,7 @@ From: ubuntu:24.04
 %help
     Example container running the RooFit tutorial and producing the rf101_basics.png image.
     The container provides ROOT with RooFit and Python integration running on Ubuntu.
-~~~
-{: .source}
+```
 
 Let's take a look at the [definition file](https://apptainer.org/docs/user/main/definition_files.html):
 * The first two lines define the base image. In this case, the image `ubuntu:20.04` from Docker Hub is used.
@@ -137,7 +139,7 @@ simply by calling the container as an executable
 ./rootInUbuntu.sif
 ```
 
-~~~
+```text
 RooFit v3.60 -- Developed by Wouter Verkerke and David Kirkby
                 Copyright (C) 2000-2013 NIKHEF, University of California & Stanford University
                 All rights reserved, please read http://roofit.sourceforge.net/license.txt
@@ -150,8 +152,7 @@ RooFit v3.60 -- Developed by Wouter Verkerke and David Kirkby
 RooRealVar::mean = 1.01746 +/- 0.0300144  L(-10 - 10)
 RooRealVar::sigma = 2.9787 +/- 0.0219217  L(0.1 - 10)
 Info in <TCanvas::Print>: png file rf101_basics.png has been created
-~~~
-{: .output}
+```
 
 You will find the output file `rf101_basics.png` in the location where the container was executed.
 If you don't have a DISPLAY setup, Root may complain. Ignore the error messages, the image will be created anyway,
@@ -168,81 +169,87 @@ A few [best practices for your containers](https://apptainer.org/docs/user/1.0/d
 1. Ensure that sensitive files like `/etc/passwd`, `/etc/group`, and `/etc/shadow` do not contain secrets.
 1. Build production containers from a definition file instead of a sandbox that has been manually changed. This ensures the greatest possibility of reproducibility and mitigates the “black box” effect.
 
-> ## Deploying your containers
-> Keep in mind that, while building a container may be time consuming, the execution can be immediate and anywhere your image is available.
-> Once your container is built with the requirements of your analysis, you can deploy it in a large cluster and execute it
-> as far as Apptainer is available on the site.
->
-> Libraries like [Sylabs Cloud Library](https://cloud.sylabs.io/library) ease the distribution of images.
-> Your institution (e.g. Fermilab or CERN) may provide an [Harbor](https://goharbor.io/) registry.
-> GitHub has a [Container Registry](https://docs.github.com/en/packages/working-with-a-github-packages-registry/working-with-the-container-registry)
-> that Apptainer can access via the ORAS API.
-> Organizations like OSG provide instructions to [use available images](https://portal.osg-htc.org/documentation/htc_workloads/using_software/containers/)
+:::{admonition} Deploying your containers
+:class: tip
+Keep in mind that, while building a container may be time consuming, the execution can be immediate and anywhere your image is available.
+Once your container is built with the requirements of your analysis, you can deploy it in a large cluster and execute it
+as far as Apptainer is available on the site.
+
+Libraries like [Sylabs Cloud Library](https://cloud.sylabs.io/library) ease the distribution of images.
+Your institution (e.g. Fermilab or CERN) may provide an [Harbor](https://goharbor.io/) registry.
+GitHub has a [Container Registry](https://docs.github.com/en/packages/working-with-a-github-packages-registry/working-with-the-container-registry)
+that Apptainer can access via the ORAS API.
+Organizations like OSG provide instructions to [use available images](https://portal.osg-htc.org/documentation/htc_workloads/using_software/containers/)
 and [distribute custom images via CVMFS](https://portal.osg-htc.org/documentation/htc_workloads/using_software/containers-docker/).
->
-> Be smart, and this will open endless possibilities in your workflow.
-{: .callout}
+
+Be smart, and this will open endless possibilities in your workflow.
+:::
 
 
-> ## Write a definition file to build a container with Pythia8 available in Python
->
-> Following the example of the first section in which a container is built with an interactive session
-> (see the previous episode),
-> write a definition file to deploy a container with Pythia8 available.
->
-> Take a look at
-> [`/opt/pythia/pythia8310/examples/main01.py`](https://gitlab.com/Pythia8/releases/-/blob/pythia8307/examples/main01.py)
-> and define the `%runscript` to execute it using `python3`.
->
-> (Tip: notice that main01.py requires `Makefile.inc`).
->
-> > ## Solution
-> > ~~~
-> > BootStrap: docker
-> > From: almalinux:9
-> >
-> > %post
-> >     yum -y groupinstall 'Development Tools'
-> >     yum -y install python3-devel
-> >     mkdir /opt/pythia && cd /opt/pythia
-> >     curl -o pythia8310.tgz https://pythia.org/download/pythia83/pythia8310.tgz
-> >     tar xvfz pythia8310.tgz
-> >     cd pythia8310
-> >     ./configure --with-python-include=/usr/include/python3.9
-> >     make
-> >
-> > %environment
-> >     export PYTHONPATH=/opt/pythia/pythia8310/lib:$PYTHONPATH
-> >     export LD_LIBRARY_PATH=/opt/pythia/pythia8310/lib:$LD_LIBRARY_PATH
-> >
-> > %runscript
-> >     cp /opt/pythia/pythia8310/Makefile.inc .
-> >     python3 /opt/pythia/pythia8310/examples/main01.py
-> >
-> > %labels
-> >     Author HEPTraining
-> >     Version v0.0.2
-> >
-> > %help
-> >     Container providing Pythia 8.310. Execute the container to run an example.
-> >     Open it in a shell to use the Pythia installation with Python 3.9
-> > ~~~
-> > {: .source}
-> >
-> > Build your container executing
-> >
-> > ```bash
-> > apptainer build pythiaInAlma9.sif myPythia8.def
-> > ```
-> >
-> > And finally, execute the container to run [`main01.py`](https://gitlab.com/Pythia8/releases/-/blob/pythia8307/examples/main01.py)
-> >
-> > ```bash
-> > ./pythiaInAlma9.sif
-> > ```
-> >
-> > This solution is building Pythia from scratch and may take several minutes to build the container.
-> > In the previous episode we saw that binary packages of Pythia are available in EPEL.
-> > Use them to build a similar container mych faster.
-> {: .solution}
-{: .challenge}
+::::{admonition} Write a definition file to build a container with Pythia8 available in Python
+:class: important
+Following the example of the first section in which a container is built with an interactive session
+(see the previous episode),
+write a definition file to deploy a container with Pythia8 available.
+
+Take a look at
+[`/opt/pythia/pythia8310/examples/main01.py`](https://gitlab.com/Pythia8/releases/-/blob/pythia8307/examples/main01.py)
+and define the `%runscript` to execute it using `python3`.
+
+(Tip: notice that main01.py requires `Makefile.inc`).
+
+:::{admonition} Solution
+:class: dropdown
+```text
+BootStrap: docker
+From: almalinux:9
+
+%post
+    yum -y groupinstall 'Development Tools'
+    yum -y install python3-devel
+    mkdir /opt/pythia && cd /opt/pythia
+    curl -o pythia8310.tgz https://pythia.org/download/pythia83/pythia8310.tgz
+    tar xvfz pythia8310.tgz
+    cd pythia8310
+    ./configure --with-python-include=/usr/include/python3.9
+    make
+
+%environment
+    export PYTHONPATH=/opt/pythia/pythia8310/lib:$PYTHONPATH
+    export LD_LIBRARY_PATH=/opt/pythia/pythia8310/lib:$LD_LIBRARY_PATH
+
+%runscript
+    cp /opt/pythia/pythia8310/Makefile.inc .
+    python3 /opt/pythia/pythia8310/examples/main01.py
+
+%labels
+    Author HEPTraining
+    Version v0.0.2
+
+%help
+    Container providing Pythia 8.310. Execute the container to run an example.
+    Open it in a shell to use the Pythia installation with Python 3.9
+```
+
+Build your container executing
+
+```bash
+apptainer build pythiaInAlma9.sif myPythia8.def
+```
+
+And finally, execute the container to run [`main01.py`](https://gitlab.com/Pythia8/releases/-/blob/pythia8307/examples/main01.py)
+
+```bash
+./pythiaInAlma9.sif
+```
+
+This solution is building Pythia from scratch and may take several minutes to build the container.
+In the previous episode we saw that binary packages of Pythia are available in EPEL.
+Use them to build a similar container mych faster.
+:::
+::::
+
+:::{admonition} Key Points
+:class: note
+- An Apptainer definition file provides an easy way to build and deploy containers.
+:::

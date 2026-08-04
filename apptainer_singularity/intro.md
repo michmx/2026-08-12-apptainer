@@ -1,0 +1,23 @@
+# Introduction to Apptainer/Singularity
+
+Apptainer (formerly known as Singularity) is a free and open-source container platform that allows you
+to create and run applications in isolated environments (also called "containers") in a simple, portable, fast, and secure manner.
+It performs operating system level virtualization known as containerization.
+Many container platforms are available, but Apptainer is designed to bring containers and reproducibility to the scientific community and High-Performance Computing (HPC) use cases.
+Using Apptainer, developers can work in reproducible environments of their choice and design, and these complete environments can be easily copied and executed on other platforms.
+
+This is an introduction to Apptainer/Singularity, its motivations and applications in HEP.
+
+Based on the [Apptainer user guide](https://apptainer.org/docs/).
+
+:::{admonition} Prerequisites
+:class: caution
+* Basic knowledge of the Unix Shell, e.g., from the [carpentry course](https://swcarpentry.github.io/shell-novice/).
+* Access to a computing system with Apptainer/Singularity available. It can either be installed locally, or the machine can have user namespaces enabled and access to CVMFS.
+* This training concludes with Episode 8. The Bonus episode 9 requires also Git and CI/CD knowledge and will allow to integrate that knowledge with the use of Apptainer/Singularity.
+:::
+
+## Table of Contents
+
+```{tableofcontents}
+```

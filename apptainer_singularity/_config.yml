@@ -1,0 +1,27 @@
+# Jupyter Book configuration
+# See https://jupyterbook.org/customize/config.html
+
+#######################################################################################
+# Book settings
+title: Introduction to Apptainer/Singularity
+author: HSF Training
+copyright: "2026"
+logo: hsf-logo.png
+
+# Pages are prose-only MyST Markdown; nothing to execute.
+execute:
+  execute_notebooks: "off"
+
+# Only build files listed in _toc.yml (avoids orphan-page warnings under -W).
+only_build_toc_files: true
+
+# Information about where the book exists on the web
+repository:
+  url: https://github.com/hsf-training/hsf-training-singularity-webpage
+  path_to_book: apptainer_singularity
+  branch: gh-pages
+
+# Add GitHub buttons to the book
+html:
+  use_issues_button: true
+  use_repository_button: true

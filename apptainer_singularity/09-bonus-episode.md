@@ -1,24 +1,25 @@
----
-title: "Bonus Episode: Building and deploying an Apptainer container to GitHub Packages"
-teaching: 40
-exercises: 0
-questions:
+# Bonus Episode: Building and deploying an Apptainer container to GitHub Packages
+
+:::{admonition} Overview
+:class: note
+**Teaching:** 40 min
+
+**Questions**
 - How to build apptainer container for python packages?
 - How to share apptainer images?
-objectives:
-- To be able to build an apptainer container and share it via GitHub packages
-keypoints:
-- Python packages can be installed in apptainer images along with ubuntu packages.
-- It is possible to publish and share apptainer images over github packages.
----
 
-> ## Prerequisites
-> The previous episode ended the Introduction to Apptainer/Singularity.
-> This bonus episode is an optional extension mixing knowledge from different courses.
-> For this lesson, you will also need,
-> * Knowledge of Git [SW Carpentry Git-Novice Lesson](https://swcarpentry.github.io/git-novice/) (for simplified authentication with the `gh` CLI, see [this version of the git training](https://mambelli.github.io/git-novice/07-github.html))
-> * Knowledge of GitHub CI/CD [HSF Github CI/CD Lesson](https://hsf-training.github.io/hsf-training-cicd-github/)
-{: .prereq}
+**Objectives**
+- To be able to build an apptainer container and share it via GitHub packages
+:::
+
+:::{admonition} Prerequisites
+:class: caution
+The previous episode ended the Introduction to Apptainer/Singularity.
+This bonus episode is an optional extension mixing knowledge from different courses.
+For this lesson, you will also need,
+* Knowledge of Git [SW Carpentry Git-Novice Lesson](https://swcarpentry.github.io/git-novice/) (for simplified authentication with the `gh` CLI, see [this version of the git training](https://mambelli.github.io/git-novice/07-github.html))
+* Knowledge of GitHub CI/CD [HSF Github CI/CD Lesson](https://hsf-training.github.io/hsf-training-cicd-github/)
+:::
 
 <iframe width="427" height="251" src="https://www.youtube.com/embed/BRRaSsrK7-k" title="Intro to Apptainer/Singularity #7 - Bonus episode" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
 
@@ -65,7 +66,6 @@ To do so, one needs to use GitHub CI/CD. A step-by-step guide is presented here.
 * **Step 4**: Copy-paste the content above and add to the Apptainer file. (In principle it is possible to build this image locally, but we will not do that here, as we wish to build it with GitHub CI/CD).
 * **Step 5**: In the `apptainer-build-deploy.yml` file, add the following content:
 
-{% raw %}
 ```text
 name: Apptainer Build Deploy
 
@@ -101,11 +101,14 @@ jobs:
            echo ${{ secrets.GITHUB_TOKEN }} | apptainer registry login -u ${{ github.repository_owner }} --password-stdin oras://ghcr.io
            apptainer push container.sif oras://ghcr.io/${GITHUB_REPOSITORY}:${tag}
 ```
-{% endraw %}
 
 The above script is designed to build and publish an Apptainer image with [GitHub packages](https://github.com/features/packages).
 
 
 * **Step 6**: Add LICENSE and README as recommended in the [SW Carpentry Git-Novice Lesson](https://swcarpentry.github.io/git-novice/), and then the repository is good to go.
 
-{% include links.md %}
+:::{admonition} Key Points
+:class: note
+- Python packages can be installed in apptainer images along with ubuntu packages.
+- It is possible to publish and share apptainer images over github packages.
+:::
