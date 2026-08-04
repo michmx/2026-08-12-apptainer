@@ -11,8 +11,6 @@
 - Create a container from a definition file.
 :::
 
-<iframe width="427" height="251" src="https://www.youtube.com/embed/aD_voqe60DA?list=PLwN-li4B10E3MtN4620yhGbctjTyQ9jna" title="Intro to Apptainer/Singularity #4 - Definition files"  frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
-
 As shown in the previous chapter, building containers with an interactive session may take several steps,
 and it can become as complicated as the required setup.
 An Apptainer definition file provides an easy way to build and deploy containers.

@@ -11,8 +11,6 @@
 - Download and assemble containers from available images in the repositories.
 :::
 
-<iframe width="427" height="251" src="https://www.youtube.com/embed/fHKSmga4xkE?list=PLwN-li4B10E3MtN4620yhGbctjTyQ9jna" title="Intro to Apptainer/Singularity #3 - Building Containers"  frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
-
 Running containers from the available public images is not the only option. In many cases, it is required to modify
 an image or even to create a new one from scratch. For such purposes, Apptainer provides the command `build`,
 defined in the documentation as the _Swiss army knife_ of container creation.

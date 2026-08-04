@@ -13,8 +13,6 @@
 - Deploy instances via definition files.
 :::
 
-<iframe width="427" height="251" src="https://www.youtube.com/embed/i0sU6ijvUPk?list=PLwN-li4B10E3MtN4620yhGbctjTyQ9jna" title="Intro to Apptainer/Singularity #6 - Instances"  frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
-
 As we have studied in previous chapters, commands such as `run` and `shell` allocate Apptainer/Singularity
 containers in the foreground, stopping any process running inside the container after logout. This behavior
 suits the use case of containers for executing interactive commands in a well-defined environment, but there

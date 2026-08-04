@@ -12,8 +12,6 @@
 - Learn about the bind paths included automatically in all containers.
 :::
 
-<iframe width="427" height="251" src="https://www.youtube.com/embed/E-vlXHEsacE?list=PLKZ9c4ONm-VkxWW98Gcn9H6WwykMiqtnF" title="Intro to Apptainer/Singularity #5 - Sharing files between host and container"  frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
-
 One of the key features about containers is the isolation of the processes running inside them. It means,
 files on the host system are not accessible within the container.
 However, it is very common that some files on the host system are needed inside the container,

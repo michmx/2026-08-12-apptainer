@@ -13,8 +13,6 @@
 - Interact with the containers using the command-line interface.
 :::
 
-<iframe width="427" height="251" src="https://www.youtube.com/embed/hiWQ1CNlxkE?list=PLwN-li4B10E3MtN4620yhGbctjTyQ9jna" title="Intro to Apptainer/Singularity #2 - Containers and Images"  frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
-
 ## The Apptainer Command Line Interface
 
 Apptainer provides a command-line interface (CLI) to interact with the containers. You can search, build or run

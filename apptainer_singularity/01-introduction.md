@@ -12,8 +12,6 @@
 - Learn the design goals behind Apptainer/Singularity.
 :::
 
-<iframe width="427" height="251" src="https://www.youtube.com/embed/yAVeZ3gP2ag?list=PLwN-li4B10E3MtN4620yhGbctjTyQ9jna" title="Intro to Apptainer/Singularity #1 - Introduction"  frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
-
 ## Working with containers
 
 Containers are packages of software that encapsulates a system environment. An OS-level virtualization is delivered
