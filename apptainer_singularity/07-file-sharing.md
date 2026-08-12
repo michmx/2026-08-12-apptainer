@@ -2,7 +2,7 @@
 
 :::{admonition} Overview
 :class: note
-**Teaching:** 30 min
+**Teaching:** 30 min | **Exercises:** 0 min
 
 **Questions**
 - How to read and write files on the host system from within the container?
@@ -12,7 +12,7 @@
 - Learn about the bind paths included automatically in all containers.
 :::
 
-One of the key features about containers is the isolation of the processes running inside them. It means,
+One of the key features about containers is the isolation of the processes running inside them. This means that
 files on the host system are not accessible within the container.
 However, it is very common that some files on the host system are needed inside the container,
 or you want to write files from the container to some directory in the host.
@@ -27,11 +27,12 @@ And the same happens with permissions and ownership for files in bind directorie
 ## Bind paths included by default
 
 For each container executed,
-[Apptainer binds automatically some directories by default](https://apptainer.org/docs/user/main/bind_paths_and_mounts.html#disabling-system-binds),
-and other defined by the system admin in the Apptainer configuration. By default, Apptainer binds:
+[Apptainer binds automatically some directories by default](https://apptainer.org/docs/user/main/bind_paths_and_mounts.html#system-defined-bind-paths),
+and others defined by the system admin in the Apptainer configuration. By default, Apptainer binds:
 * The user's home directory ($HOME)
 * The current directory when the container is executed ($PWD)
 * System-defined paths: `/tmp`, `/proc`, `/dev`, etc.
+
 Since this is defined in the configuration, it may vary from site to site.
 
 Let's use for example the container built during the last chapter called `rootInUbuntu.sif`. Take a look at your
@@ -59,7 +60,7 @@ mounts automatically your `$HOME` inside the container.
 If for any reason you want to execute a container removing the default binds, the command-line option `--no-mount`
 is available. For example, to disable the bind of `/tmp`
 ```bash
-run --no-mount tmp my_container.sif
+apptainer run --no-mount tmp my_container.sif
 ```
 :::
 
@@ -75,14 +76,14 @@ ls /home/myuser
 ls: cannot access '/home/myuser': No such file or directory
 ```
 
-Note how we disabled both `home` and `cwd` (current working directory). This because if you are running the apptainer
+Note how we disabled both `home` and `cwd` (current working directory). This is because if you are running the apptainer
 command from your home directory, even if you use `--no-mount home` the home directory may still be mounted
 because it is also your current directory.
 
 ## User-defined bind paths
 
 Apptainer provides mechanisms to specify additional binds when executing a container via command-line
-or environment variables. Apptainer offers a complex set of mechanism for binds or other mounts.
+or environment variables. Apptainer offers a complex set of mechanisms for binds or other mounts.
 Here we present the main points, refer to the
 [Bind Paths and Mounts documentation](https://apptainer.org/docs/user/main/bind_paths_and_mounts.html) for more.
 
@@ -99,7 +100,7 @@ for your analysis
 mkdir $HOME/mydata
 echo "MUONMASS=105.66 MeV" > $HOME/mydata/muonMass.txt
 ```
-It is very, very important in your analysis workflow to know the mass of the muon, right? It may have sense to put the data
+It is very, very important in your analysis workflow to know the mass of the muon, right? It may make sense to put the data
 in a high-level directory within the container, like `/data`
 ```bash
 apptainer shell --bind $HOME/mydata:/data rootInUbuntu.sif
@@ -117,11 +118,11 @@ Now you can use the mass of the muon from a root-level directory!
 If multiple directories must be available in the container, you can repeat the option or they can be defined with a comma between each pair of directories,
 i.e. using the syntax `source1:destination1,source2:destination2`.
 
-Also. If the destination is not specified, it will be set as equal as the source. For example
+Also, if the destination is not specified, it is set equal to the source. For example
 ```bash
 apptainer shell --bind /cvmfs rootInUbuntu.sif
 ```
-Will mount `/cvmfs` inside the container. Try it!
+will mount `/cvmfs` inside the container. Try it!
 
 :::{admonition} Binding directories with Docker-like syntax using `--mount`
 :class: tip
@@ -135,12 +136,13 @@ additional options available.
 ### Bind with environment variables
 
 If the environment variable `$APPTAINER_BIND` is defined, apptainer will bind inside ANY container
-the directories specified in the format `source`, with the destination being optional (in the same way as using
+the directories specified in the format `source:destination`, with the destination being optional (in the same way as using
 `--bind`). For example:
 ```bash
-export SINGULARITY_BIND="/cvmfs"
+export APPTAINER_BIND="/cvmfs"
 ```
 will bind CVMFS to all your Apptainer containers (`/cvmfs` must be available in the host, of course).
+The `$SINGULARITY_BIND` variable is also honored, for compatibility with Singularity.
 
 You can also bind multiple directories using commas between each `source:destination`.
 
@@ -149,5 +151,5 @@ You can also bind multiple directories using commas between each `source:destina
 - Bind mounts allow reading and writing files within the container.
 - In Apptainer, you have same owner and permissions for files inside and outside the container.
 - Some paths are mounted by default by Apptainer.
-- Additional directories to bind can be defined using the `--bind` option or the environment variable `$SINGULARITY_BIND`.
+- Additional directories to bind can be defined using the `--bind` option or the environment variable `$APPTAINER_BIND`.
 :::

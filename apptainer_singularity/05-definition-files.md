@@ -28,8 +28,8 @@ The following recipe shows how to build a hello-world container, and run the con
 
 - Step 2: Include the following script in the `hello-world.def` file to define the environment
 
-  ```bash
-  BootStrap: docker
+  ```text
+  Bootstrap: docker
   From: ubuntu:24.04
 
   %runscript
@@ -37,8 +37,8 @@ The following recipe shows how to build a hello-world container, and run the con
   # Print Hello world when the image is loaded
   ```
 
-    In the above script, the first line - `BootStrap: docker` indicates that apptainer will use the docker protocol to retrieve the base OS to start the image.
-The `From: ubuntu:20.04` is given to apptainer to start from a specific image/OS in Docker Hub.
+    In the above script, the first line - `Bootstrap: docker` indicates that Apptainer will use the Docker protocol to retrieve the base OS to start the image.
+The `From: ubuntu:24.04` is given to Apptainer to start from a specific image/OS in Docker Hub.
 Any content within the  `%runscript` will be written to a file that is executed when one runs the apptainer image.
 The `echo "Hello World"` command will print the `Hello World` on the terminal.
 Finally the `#` hash is used to include comments within the definition file.
@@ -62,7 +62,7 @@ To delete the hello-world Apptainer image, simply delete the `hello-world.sif` f
 
 :::{admonition} `apptainer delete`
 :class: tip
-Note that there is also a `apptainer delete` command, but it is to delete an image from a remote library.
+Note that there is also an `apptainer delete` command, used to delete an image from a remote library.
 To learn more about using remote endpoints and pulling and pushing images from or to libraries, read
 [Remote Endpoints](https://apptainer.org/docs/user/main/endpoint.html) and [Library API Registries](https://apptainer.org/docs/user/main/library_api.html).
 :::
@@ -79,15 +79,22 @@ Following the ROOT instructions to
 the definition file will look like
 
 ```text
-BootStrap: docker
+Bootstrap: docker
 From: ubuntu:24.04
+
+# NOTE: This section is only if building the container in the JupyterHub at CompHEP 2026
+%setup
+    mkdir -p ${APPTAINER_ROOTFS}/cvmfs
+    mkdir -p ${APPTAINER_ROOTFS}/direct/u0b
+    mkdir -p ${APPTAINER_ROOTFS}/u0b/software
 
 %post
     apt-get update -y
-    apt-get install wget -y
     export DEBIAN_FRONTEND=noninteractive
-    apt-get install dpkg-dev cmake g++ gcc binutils libx11-dev libxpm-dev \
-        libxft-dev libxext-dev python libssl-dev libgsl0-dev libtiff-dev -y
+    apt-get install wget -y
+    apt-get install binutils cmake dpkg-dev g++ gcc libssl-dev git libx11-dev \
+        libxext-dev libxft-dev libxpm-dev python3 libtbb-dev libvdt-dev libgif-dev \
+        libgsl-dev -y
     cd /opt
     wget https://root.cern/download/root_v6.38.04.Linux-ubuntu24.04-x86_64-gcc13.3.tar.gz
     tar -xzvf root_v6.38.04.Linux-ubuntu24.04-x86_64-gcc13.3.tar.gz
@@ -98,7 +105,7 @@ From: ubuntu:24.04
     export PYTHONPATH=/opt/root/lib
 
 %runscript
-    python /opt/root/tutorials/roofit/rf101_basics.py
+    python3 /opt/root/tutorials/roofit/roofit/rf101_basics.py
 
 %labels
     Author HEPTraining
@@ -109,8 +116,18 @@ From: ubuntu:24.04
     The container provides ROOT with RooFit and Python integration running on Ubuntu.
 ```
 
+:::{admonition} What is `export DEBIAN_FRONTEND=noninteractive` for?
+:class: tip
+Some Debian/Ubuntu packages pause during installation to ask configuration questions
+(for example, `tzdata` asks for your geographic region and time zone).
+During `apptainer build` there is no terminal to type answers into, so a prompt like this would hang the build.
+Setting `DEBIAN_FRONTEND=noninteractive` tells `apt-get` to skip all prompts and accept the default answers,
+letting the build run unattended.
+It only affects the commands that follow it inside `%post`; it does not change the environment of the final container.
+:::
+
 Let's take a look at the [definition file](https://apptainer.org/docs/user/main/definition_files.html):
-* The first two lines define the base image. In this case, the image `ubuntu:20.04` from Docker Hub is used.
+* The first two lines define the base image. In this case, the image `ubuntu:24.04` from Docker Hub is used.
 * `%post` are lines to execute inside the container after the OS has been set. In this example, we are listing the
 steps that we would follow to install ROOT with a precompiled binary in an interactive session.
 Notice that the binary used corresponds with the Ubuntu version defined at the second line.
@@ -120,17 +137,17 @@ variables required to execute ROOT and PyROOT.
 To illustrate the functionality, we will just run [rf101_basics.py](https://root.cern/doc/master/rf101__basics_8py.html)
 from the RooFit tutorial.
 * `%labels` add custom metadata to the container.
-* `%help` it is the container documentation: what it is and how to use it. Can be displayed using `apptainer run-help`
+* `%help` is the container documentation: what it is and how to use it. It can be displayed using `apptainer run-help`.
 
-Save this definition file as `rootInUbuntu.def`. To build the container, just provide the definition file as argument
-(executing as superuser):
+Save this definition file as `rootInUbuntu.def`. To build the container, just provide the definition file as argument.
+Modern Apptainer versions build images without any special privileges; with older versions you may need `sudo` or the `--fakeroot` option:
 ```bash
 apptainer build rootInUbuntu.sif rootInUbuntu.def
 ```
 
 
 Then, an interactive shell inside the container can be initialized with `apptainer shell`, or
-a command executed with `apptainer exec`. A third option is execute the actions defined inside `%runscript`
+a command executed with `apptainer exec`. A third option is to execute the actions defined inside `%runscript`
 simply by calling the container as an executable
 
 ```bash
@@ -138,9 +155,6 @@ simply by calling the container as an executable
 ```
 
 ```text
-RooFit v3.60 -- Developed by Wouter Verkerke and David Kirkby
-                Copyright (C) 2000-2013 NIKHEF, University of California & Stanford University
-                All rights reserved, please read http://roofit.sourceforge.net/license.txt
 ...
  PARAMETER  CORRELATION COEFFICIENTS
        NO.  GLOBAL      1      2
@@ -153,13 +167,14 @@ Info in <TCanvas::Print>: png file rf101_basics.png has been created
 ```
 
 You will find the output file `rf101_basics.png` in the location where the container was executed.
-If you don't have a DISPLAY setup, Root may complain. Ignore the error messages, the image will be created anyway,
+The exact output depends on the ROOT version used in the container.
+If you don't have a `DISPLAY` set up, ROOT may complain. Ignore the error messages; the image will be created anyway.
 
-Here we have covered the basics with a few examples focused to HEP software.
+Here we have covered the basics with a few examples focused on HEP software.
 Check the [Apptainer docs](https://apptainer.org/docs/user/main/build_a_container.html) to see all the available
 options and more details related to the container creation.
 
-A few [best practices for your containers](https://apptainer.org/docs/user/1.0/definition_files.html#best-practices-for-build-recipes) to make them more usable, portable, and secure:
+A few [best practices for your containers](https://apptainer.org/docs/user/main/definition_files.html#best-practices-for-build-recipes) to make them more usable, portable, and secure:
 1. Always install packages, programs, data, and files into operating system locations (e.g. not `/home`, `/tmp` , or any other directories that might get commonly binded on).
 1. Document your container. If your runscript doesn’t supply help, write a `%help` or `%apphelp` section. A good container tells the user how to interact with it.
 1. If you require any special environment variables to be defined, add them to the `%environment` and `%appenv` sections of the build recipe.
@@ -174,7 +189,7 @@ Once your container is built with the requirements of your analysis, you can dep
 as far as Apptainer is available on the site.
 
 Libraries like [Sylabs Cloud Library](https://cloud.sylabs.io/library) ease the distribution of images.
-Your institution (e.g. Fermilab or CERN) may provide an [Harbor](https://goharbor.io/) registry.
+Your institution (e.g. Fermilab or CERN) may provide a [Harbor](https://goharbor.io/) registry.
 GitHub has a [Container Registry](https://docs.github.com/en/packages/working-with-a-github-packages-registry/working-with-the-container-registry)
 that Apptainer can access via the ORAS API.
 Organizations like OSG provide instructions to [use available images](https://portal.osg-htc.org/documentation/htc_workloads/using_software/containers/)
@@ -191,7 +206,7 @@ Following the example of the first section in which a container is built with an
 write a definition file to deploy a container with Pythia8 available.
 
 Take a look at
-[`/opt/pythia/pythia8310/examples/main01.py`](https://gitlab.com/Pythia8/releases/-/blob/pythia8307/examples/main01.py)
+[`/opt/pythia/pythia8310/examples/main01.py`](https://gitlab.com/Pythia8/releases/-/blob/pythia8310/examples/main01.py)
 and define the `%runscript` to execute it using `python3`.
 
 (Tip: notice that main01.py requires `Makefile.inc`).
@@ -199,12 +214,12 @@ and define the `%runscript` to execute it using `python3`.
 :::{admonition} Solution
 :class: dropdown
 ```text
-BootStrap: docker
+Bootstrap: docker
 From: almalinux:9
 
 %post
-    yum -y groupinstall 'Development Tools'
-    yum -y install python3-devel
+    dnf -y groupinstall 'Development Tools'
+    dnf -y install python3-devel
     mkdir /opt/pythia && cd /opt/pythia
     curl -o pythia8310.tgz https://pythia.org/download/pythia83/pythia8310.tgz
     tar xvfz pythia8310.tgz
@@ -229,13 +244,13 @@ From: almalinux:9
     Open it in a shell to use the Pythia installation with Python 3.9
 ```
 
-Build your container executing
+Save this definition file as `myPythia8.def` and build your container executing
 
 ```bash
 apptainer build pythiaInAlma9.sif myPythia8.def
 ```
 
-And finally, execute the container to run [`main01.py`](https://gitlab.com/Pythia8/releases/-/blob/pythia8307/examples/main01.py)
+And finally, execute the container to run [`main01.py`](https://gitlab.com/Pythia8/releases/-/blob/pythia8310/examples/main01.py)
 
 ```bash
 ./pythiaInAlma9.sif
@@ -243,7 +258,7 @@ And finally, execute the container to run [`main01.py`](https://gitlab.com/Pythi
 
 This solution is building Pythia from scratch and may take several minutes to build the container.
 In the previous episode we saw that binary packages of Pythia are available in EPEL.
-Use them to build a similar container mych faster.
+Use them to build a similar container much faster.
 :::
 ::::
 

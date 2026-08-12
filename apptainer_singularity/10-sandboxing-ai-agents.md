@@ -67,7 +67,7 @@ previous episodes (which installs the Scikit-HEP packages) and install opencode 
 opencode image and install the packages you need
 :::
 
-## Choosing an open model
+## Using an open model
 
 Opencode can talk to many model providers. Here we will use the open-weights models provided by SCDF at BNL. 
 

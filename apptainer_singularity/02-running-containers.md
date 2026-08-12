@@ -232,6 +232,19 @@ Apptainer>
 ```
 :::
 
+
+:::{admonition} Images distributed via CVMFS
+:class: tip
+Some organizations distribute images via [CVMFS](https://cernvm.cern.ch/portal/filesystem), 
+a very efficient read-only file system for software distribution.
+
+For example, OSG distributes a set of images for HEP software via CVMFS. You can use them directly without downloading them first:
+```bash
+apptainer shell /cvmfs/singularity.opensciencegrid.org/opensciencegrid/osgvo-el9:latest
+```
+:::
+
+
 ### Executing commands
 
 The command `exec` starts the container from a specified image and executes a command inside it.

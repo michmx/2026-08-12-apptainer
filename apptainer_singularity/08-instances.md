@@ -37,7 +37,7 @@ The image must be started in the following way:
 ```bash
 apptainer instance start almalinux_9.sif myalma9
 ```
-In this example, the `.sif` is the image downloaded from Dockerhub, and `mycentos7` is the name that we have
+In this example, the `.sif` is the image downloaded from Docker Hub, and `myalma9` is the name that we have
 assigned to the instance. Instead of opening a shell session or executing a command, the container is running in
 the background.
 
@@ -52,7 +52,7 @@ myalma9          3277300        /tmp/myuser/almalinux_9.sif
 
 To interact with the instance, the commands `exec` and `shell` are available. The instance must be referred as
 `instance://name`.
-For example, to open a shell inside the CentOS instance:
+For example, to open a shell inside the AlmaLinux instance:
 ```bash
 apptainer shell instance://myalma9
 ```
@@ -79,7 +79,7 @@ binding the directory `mydata/` from the host as `/data` inside the instance.
 ## A web server as an instance
 
 One of the main purposes of the Apptainer instances is deploying services with customized environments. Before moving
-to more complex use cases, let's start with a basic example: a web service showing a HTML with a message.
+to more complex use cases, let's start with a basic example: a web service showing an HTML page with a message.
 
 Let's write a basic `index.html` file as:
 ```html
@@ -97,33 +97,33 @@ Let's write a basic `index.html` file as:
 If you are not familiar with HTML take a quick look at the [HTML Tutorial](https://www.w3schools.com/html/), but it is
 not mandatory. What really matters is having a minimal webpage that our server will show.
 
-Now, let's prepare a basic web server using [Python http.server](https://docs.python.org/3.9/library/http.server.html).
+Now, let's prepare a basic web server using [Python http.server](https://docs.python.org/3/library/http.server.html).
 Create a definition file, saved as `basicServer.def`, which contains:
-```
+```text
 Bootstrap: docker
-From: ubuntu:20.04
+From: ubuntu:24.04
 
 %post
     apt-get update -y
-    apt-get install -y python3.9
+    apt-get install -y python3
 
 %files
     index.html /tmp/index.html
 
 %startscript
-   cd /tmp
-   python3.9 -m http.server 8850
+    cd /tmp
+    python3 -m http.server 8850
 ```
 If you recall the chapter about [definition files](05-definition-files.md),
-this definition file will pull the official Ubuntu image from Dockerhub, and will install Python3.9.
-In addition, it copies `index.html` in `/tmp` **inside** the container. When the instance starts, commands specified on
-`%startscript` are executed. On this example, `http.server` will be executed, serving a page in the port 8850 (you can
+this definition file will pull the official Ubuntu image from Docker Hub, and will install Python 3.
+In addition, it copies `index.html` to `/tmp` **inside** the container. When the instance starts, commands specified on
+`%startscript` are executed. In this example, `http.server` will be executed, serving a page in the port 8850 (you can
 use any other port if 8850 is busy with another service).
 
-Let's build an image from the definition. Remember that building images requires either superuser permissions or
-using the flag `--fakeroot` as
+Let's build an image from the definition. Modern Apptainer versions build images without any special privileges
+(with older versions you may need `sudo` or the `--fakeroot` flag):
 ```bash
-apptainer build --fakeroot basicServer.sif basicServer.def
+apptainer build basicServer.sif basicServer.def
 ```
 
 Now, let's start an instance named `myWebService` with the image that we just built
@@ -133,8 +133,8 @@ apptainer instance start --no-mount tmp --cleanenv basicServer.sif myWebService
 Reminder from the previous chapter: with `--no-mount tmp` we are asking Apptainer to NOT bind `/tmp` from the host
 to the instance (it is mounted by default), we use instead an isolated `/tmp` inside the instance where index.html has
 been copied.
-And with `--cleanenv` we clear the environment. It is not always necessary but it prevents interferences
-from the host environment (see ).
+And with `--cleanenv` we clear the environment. It is not always necessary but it prevents interference
+from the host environment (see the [Building Containers episode](04-building-containers.md)).
 
 
 You can confirm in the terminal that the web service is up using `curl` as
@@ -145,7 +145,7 @@ curl http://localhost:8850
 <!DOCTYPE html>
 <html>
 <head>
-<title>Welcome to my service!</title>
+<title>My awesome service</title>
 </head>
 <body>
 <h1>Hello world!</h1>
@@ -158,17 +158,17 @@ If you are executing Apptainer locally, try to open http://localhost:8850.
 
 :::{admonition} SSH tunneling
 :class: tip
-If you are deploying a service in a cluster of your institution (as LXPLUS at CERN) it is likely that you need
+If you are deploying a service in a cluster of your institution (such as LXPLUS at CERN) it is likely that you need
 SSH tunneling for opening pages served by your service with a web browser. A basic Local Port Forwarding can be configured as:
 ```bash
-ssh -L [local_hostname:]<local_port>:localhost:<dest_port> myuser@<server>
+ssh -L [local_hostname:]<local_port>:localhost:<remote_port> myuser@<server>
 ```
-where `<local_port>` is the one used by your service running on `<server>`, and `<server>` is the address of your institutional resources
-(`echo "$(whoami)@$(hostname)"` will print your user and host).
-Finally `localhost:<dest_port>` is how you will access the service locally, e.g. what you type in the laptop browser.
+where `<remote_port>` is the port used by your service running on `<server>`, and `<server>` is the address of your institutional resources
+(`echo "$(whoami)@$(hostname)"` on the server will print your user and host).
+Finally `localhost:<local_port>` is how you will access the service locally, e.g. what you type in the laptop browser.
 For example, for connecting to LXPLUS forwarding the port 8850:
 ```bash
- ssh -L 8850:localhost:8850 myuser@lxplus.cern.ch
+ssh -L 8850:localhost:8850 myuser@lxplus.cern.ch
 ```
 Then you can open http://localhost:8850 in your machine!
 
@@ -188,7 +188,7 @@ narrative text, and visualizations.
 What if we provide a Jupyter notebook ready to use ROOT? If you remember our example from the
 [definition files chapter](05-definition-files.md),
 at this point it must be almost straightforward:
-```
+```text
 Bootstrap: docker
 From: ubuntu:24.04
 
@@ -201,7 +201,7 @@ From: ubuntu:24.04
     apt-get install wget -y
     export DEBIAN_FRONTEND=noninteractive
     apt-get install dpkg-dev cmake g++ gcc binutils libx11-dev libxpm-dev \
-    libxft-dev libxext-dev libssl-dev libgsl0-dev libtiff-dev libtbb-dev -y
+    libxft-dev libxext-dev libssl-dev libgsl-dev libtiff-dev libtbb-dev -y
     cd /opt
     wget https://root.cern/download/root_v6.38.04.Linux-ubuntu24.04-x86_64-gcc13.3.tar.gz
     tar -xzvf root_v6.38.04.Linux-ubuntu24.04-x86_64-gcc13.3.tar.gz
@@ -212,12 +212,12 @@ From: ubuntu:24.04
     export PYTHONPATH=/opt/root/lib
 
 %startscript
-   jupyter notebook --port 8850
+    jupyter notebook --port 8850
 ```
 
 Save the definition file as `jupyterWithROOT.def`, and let's build an image called `jupyterWithROOT.sif`
 ```bash
-apptainer build --fakeroot jupyterWithROOT.sif jupyterWithROOT.def
+apptainer build jupyterWithROOT.sif jupyterWithROOT.def
 ```
 Now, start an instance named `mynotebook` with our brand-new image.
 Consider using `--cleanenv` if needed.
@@ -241,15 +241,15 @@ apptainer exec instance://mynotebook jupyter notebook list
 ```
 ```text
 Currently running servers:
-http://localhost:8850/?token=12asldc9b2084f9b664b39a6246022312bc9c605b :: /home/myHome
+http://localhost:8850/?token=12asldc9b2084f9b664b39a6246022312bc9c605b :: /home/myuser
 ```
 
 :::{admonition} Notebook starting on a different port!
 :class: tip
-If the chosen port for the Notebook (8850 stated in the SIF file) is not available,
+If the chosen port for the Notebook (8850, set in the definition file) is not available,
 the notebook will not error out, but will start and use the first available port after that.
-E.g. if you did not terminate the web server from the previous example,
-The above command "jupyter notebook list" will show you the correct port.
+E.g. if you did not terminate the web server from the previous example, the notebook will start
+on a different port; the `jupyter notebook list` command shown above will show you the correct port.
 :::
 
 Open the URL with the token (from http to the first space), and you will be able to see the Jupyter interface. Try to open a new notebook and write in
@@ -266,13 +266,13 @@ c.Draw()
 ```
 
 The bottom line: with any Jupyter notebook that you write, you can provide an Apptainer image that will
-set the environment required to execute the cells. It doesn't matter if yourself or someone else comes in one, five,
-ten years, your code will work independently of the software available in your computer as long as Apptainer/Singularity
+set the environment required to execute the cells. It doesn't matter whether you or someone else comes back in one, five,
+or ten years: your code will work independently of the software available on your computer as long as Apptainer/Singularity
 is available!
 
 ::::{admonition} A Jupyter notebook with Uproot available
 :class: important
-Can you setup a Jupyter notebook server with [Uproot](https://uproot.readthedocs.io/en/latest/index.html) available in Apptainer?
+Can you set up a Jupyter notebook server with [Uproot](https://uproot.readthedocs.io/en/latest/index.html) available in Apptainer?
 
 Hint: Uproot can be installed using `pip`. And use the option `--break-system-packages`.
 New Python versions complain when installing packages without a virtual environment. You need that option to force the install.
@@ -291,7 +291,7 @@ From: ubuntu:24.04
     pip install --break-system-packages uproot
 
 %startscript
-   jupyter notebook --port 8850
+    jupyter notebook --port 8850
 ```
 Confirm that Uproot is available opening a notebook and executing in a cell
 ```python
@@ -303,6 +303,6 @@ print(uproot.__doc__)
 
 :::{admonition} Key Points
 :class: note
-- Instances allow to setup services via Apptainer images or definition files.
-- Code provided in Jupyter notebooks can be accompanied by a Apptainer/Singularity image with the environment needed for its execution, ensuring the reproducibility of the results.
+- Instances allow you to set up services via Apptainer images or definition files.
+- Code provided in Jupyter notebooks can be accompanied by an Apptainer/Singularity image with the environment needed for its execution, ensuring the reproducibility of the results.
 :::

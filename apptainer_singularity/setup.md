@@ -33,11 +33,11 @@ On Windows you can use [WSL (Windows Subsystem for Linux)](https://learn.microso
 You can run a Linux system on your Windows computer. We recommend [AlmaLinux9](https://wiki.almalinux.org/documentation/wsl.html).
 Then follow the Linux instructions to install Apptainer as root.
 
-On MacOS you need as well a Linux VM to be able to use Apptainer.
-There are different solution, here we describe how to use [Lima](https://lima-vm.io/).
+On macOS you also need a Linux VM to be able to use Apptainer.
+There are different solutions; here we describe how to use [Lima](https://lima-vm.io/).
 
 ### Install on a Mac
-To avoid architecture problems we recommend to use a x86\_64 VM also on ARM Macs.
+To avoid architecture problems we recommend using an x86\_64 VM also on ARM Macs.
 It will be less performant but you'll avoid architecture errors when images are available only for x86\_64.
 To do so you can use [QEMU](https://www.qemu.org/) and [Lima](https://lima-vm.io/) via [Homebrew](https://brew.sh/).
 
@@ -50,16 +50,16 @@ To do so you can use [QEMU](https://www.qemu.org/) and [Lima](https://lima-vm.io
     brew install qemu lima
     ```
 
-2. Prepare a x86\_64 VM. Here I'm using a Ubuntu image:
+2. Prepare an x86\_64 VM. Here we use an Ubuntu image:
 
     ```bash
     # Prepare the VM configuration file
     cat > ubuntu-x86_64.yaml << EOF
     arch: "x86_64"
     images:
-      - location: "https://cloud-images.ubuntu.com/jammy/current/jammy-server-cloudimg-amd64.img"
+      - location: "https://cloud-images.ubuntu.com/noble/current/noble-server-cloudimg-amd64.img"
         arch: "x86_64"
-      - location: "https://cloud-images.ubuntu.com/jammy/current/jammy-server-cloudimg-arm64.img"
+      - location: "https://cloud-images.ubuntu.com/noble/current/noble-server-cloudimg-arm64.img"
         arch: "aarch64"
     # Disable mounts and containerd, otherwise booting up may time out if the host is slow
     mounts: []
@@ -95,7 +95,7 @@ It is easiest to
 
 ### On Linux, If not
 
-If the above is not possible and you cannot use the CVMFS distribution you have still an option if user namespace is enabled on your system:
+If the above is not possible and you cannot use the CVMFS distribution you still have an option if user namespaces are enabled on your system:
 1. Check if user namespaces are enabled:
 
     ```bash
@@ -103,7 +103,7 @@ If the above is not possible and you cannot use the CVMFS distribution you have 
     grep -q 'kernel.unprivileged_userns_clone=1' /etc/sysctl.d/90-unprivileged_userns.conf && \
         echo "User namespaces enabled, continue the Apptainer installation" || \
         echo "User namespaces NOT enabled, your use of Apptainer will be very limited"
-    # on RHEL/CentOS cat /proc/sys/user/max_user_namespaces` is bigger than 0
+    # on RHEL/CentOS check that /proc/sys/user/max_user_namespaces is bigger than 0
     [[ $(cat /proc/sys/user/max_user_namespaces) -gt 0 ]] && \
         echo "User namespaces enabled, continue the Apptainer installation" || \
         echo "User namespaces NOT enabled, your use of Apptainer will be very limited"
@@ -111,7 +111,7 @@ If the above is not possible and you cannot use the CVMFS distribution you have 
 
    See [these full instructions](https://apptainer.org/docs/admin/main/user_namespace.html#user-namespace-requirements) for more about checking for and enabling user namespaces.
 1. If enabled, install unprivileged Apptainer with one of these three methods (in order of preference):
-    1. Chose your `INSTALL_DIR` and [install there the relocatable Apptainer (recommended)](https://apptainer.org/docs/admin/main/installation.html#install-unprivileged-from-pre-built-binaries). Run:
+    1. Choose your `INSTALL_DIR` and [install there the relocatable Apptainer (recommended)](https://apptainer.org/docs/admin/main/installation.html#install-unprivileged-from-pre-built-binaries). Run:
 
         ```bash
         curl -s https://raw.githubusercontent.com/apptainer/apptainer/main/tools/install-unprivileged.sh | \
@@ -119,7 +119,7 @@ If the above is not possible and you cannot use the CVMFS distribution you have 
         ```
 
     1. Alternatively [install from source without root privileges](https://github.com/apptainer/apptainer/blob/main/INSTALL.md).
-    1. Or use [cvmfsexec](https://github.com/cvmfs/cvmfsexec) to get CVMFS. This is a bit more complex, you can follow the instrictions summarized also in
+    1. Or use [cvmfsexec](https://github.com/cvmfs/cvmfsexec) to get CVMFS. This is a bit more complex, you can follow the instructions summarized also in
 [this paper](https://indico.cern.ch/event/885212/contributions/4120683/attachments/2181040/3684201/CernVMWorkshopCvmfsExec20210201.pdf).
 
-If user namespaces are not enabled, apptainers/singularity is not installed, and you have no root access to the host, then your use of apptainer/singularity will be very limited even if you install it with one of the three methods above. You need to request to your system administrator to either [install Apptainer/Singularity](https://apptainer.org/docs/user/main/quick_start.html#apptainer-on-a-shared-resource) or to enable [user namespaces](https://apptainer.org/docs/admin/main/user_namespace.html).
+If user namespaces are not enabled, apptainer/singularity is not installed, and you have no root access to the host, then your use of apptainer/singularity will be very limited even if you install it with one of the three methods above. You need to request to your system administrator to either [install Apptainer/Singularity](https://apptainer.org/docs/user/main/quick_start.html#apptainer-on-a-shared-resource) or to enable [user namespaces](https://apptainer.org/docs/admin/main/user_namespace.html).
