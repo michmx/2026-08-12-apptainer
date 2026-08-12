@@ -2,7 +2,7 @@
 
 :::{admonition} Overview
 :class: note
-**Teaching:** 10 min
+**Teaching:** 10 min | **Exercises:** 0 min
 
 **Questions**
 - What issues motivated the creation of Apptainer/Singularity?
@@ -14,10 +14,10 @@
 
 ## Working with containers
 
-Containers are packages of software that encapsulates a system environment. An OS-level virtualization is delivered
-in a container, and any program running on it will use the contextualization isolated inside the container. They have
+Containers are packages of software that encapsulate a system environment. An OS-level virtualization is delivered
+in a container, and any program running in it will use the environment isolated inside the container. They have
 the advantage that you can build a container on any system, your laptop for example, and then execute it anywhere
-as far as the platform compatible with the container is available.
+as long as a platform compatible with the container is available.
 
 Concepts such as reproducibility, preservation, and distribution
 are important in the HEP community, and the containers provide a solution totally compatible with such concepts:
@@ -32,10 +32,9 @@ system available on the sites.
 Virtual Machines (VMs) provide the same isolation and reproducibility.
 However, they emulate the hardware, or at least the full OS, so they are computationally heavier to run,
 require bigger files when distributed and are less flexible than containers, that run only what you require to be different.
-All containers use the same OS Kernel of the host and contain only Libraries and the App that run in User space.
+All containers use the same OS kernel as the host and contain only the libraries and applications that run in user space.
 See [this article](https://dockerlabs.collabnix.com/beginners/difference-vm-containers.html) for a more detailed comparison.
-And if you are curious about the Linux Kernel mechanisms that make containers possible you can check [this blog pos](https://q15928.github.io/2021/01/09/container-101/
-).
+And if you are curious about the Linux kernel mechanisms that make containers possible you can check [this blog post](https://q15928.github.io/2021/01/09/container-101/).
 :::
 
 ## Why Apptainer/Singularity?
@@ -48,7 +47,7 @@ start the container engine daemon and install and run applications, each in its 
 This is not so compatible with the workflow in the High-Performance Computing (HPC) and High Throughput Computing (HTC),
 in which usually complex applications run exhaustively using all the available resources and without any special privilege.
 
-Apptainer/Singularity is a container platform created for the HPC/HTC use case. It allows to build and run containers with just
+Apptainer/Singularity is a container platform created for the HPC/HTC use case. It allows you to build and run containers with just
 a few steps in most of the cases, and its design presents key advantages for the scientific community:
 * Single-file based container images, facilitating the distribution, archiving and sharing.
 * Ability to run, and in modern systems also to be installed, without any root daemon or setuid privileges. This makes it safer for large computer centers with shared resources.
@@ -56,7 +55,7 @@ a few steps in most of the cases, and its design presents key advantages for the
 * Simple integration with resource managers and distributed computing frameworks because it runs as a regular application.
 * Minimum overhead. No extra processes after initializing the container (Uses `execv()`).
 
- <a href="https://apptainer.org/docs/user/">
+<a href="https://apptainer.org/docs/user/">
 <img src="https://apptainer.org/docs/user/main/_static/logo.png" alt="Apptainer/Singularity" width="220">
 </a>
 
@@ -73,19 +72,20 @@ Currently there are three products derived from the original Singularity project
 * *SingularityPro*: commercial software by [Sylabs](https://sylabs.io/).
 * [*SingularityCE*](https://sylabs.io/2022/06/singularityce-is-singularity/): open source Singularity supported by Sylabs.
 * *Apptainer*: open source Singularity, renamed in 2021 and hosted by the [Linux Foundation](https://www.linuxfoundation.org/).
-As of Spring 2024 all three Apptainer/Singularity versions are compatible and practically the same (differ in some additional format support), but have different roadmaps.
+
+As of 2026 all three Apptainer/Singularity versions are compatible and practically the same (they differ in some additional format support), but have different roadmaps.
 There is hope that in the future they will join forces, but this is not currently the case.
 To understand how this came to be you can read the [Singularity history on Wikipedia](https://en.wikipedia.org/wiki/Singularity_%28software%29#History).
 
 We are following Apptainer, the most adopted variation in the scientific community, so we are using the `apptainer` command.
 If you are using SingularityPro or SingularityCE, just replace the command `apptainer` with `singularity` and the
-`APPTAINER_` and  `APPTAINERENV_` variable prefixes  with `SINGULARITY_` and  `SINGULARITYENV_`.
+`APPTAINER_` and `APPTAINERENV_` variable prefixes with `SINGULARITY_` and `SINGULARITYENV_`.
 If you have older scripts still using the `singularity` command and `SINGULARITY...` variables, they will work also in Apptainer because it is providing the `singularity` alias
 and [full compatibility with the previous Singularity environment](https://apptainer.org/docs/user/main/singularity_compatibility.html).
 
 ## Documentation
 
-The [official Apptainer documentation](https://apptainer.org/docs/) is available online. Contains basic and advanced
+The [official Apptainer documentation](https://apptainer.org/docs/) is available online. It contains basic and advanced
 usage of Apptainer/Singularity beyond the scope of this training document. Take a look and read the nice
 [introduction](https://apptainer.org/docs/user/main/introduction.html), explaining the motivation behind the
 creation of Apptainer/Singularity.
@@ -93,6 +93,6 @@ creation of Apptainer/Singularity.
 :::{admonition} Key Points
 :class: note
 - Apptainer/Singularity is a container platform designed by and for scientists.
-- Single-file based container images facilitates the distribution.
+- Single-file based container images facilitate distribution.
 - Secure. User inside the container = user outside.
 :::
